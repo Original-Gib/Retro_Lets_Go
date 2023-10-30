@@ -21,6 +21,8 @@ class ArcadeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        var edit = false
+
         binding = ActivityRetroLetsGoBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -30,21 +32,30 @@ class ArcadeActivity : AppCompatActivity() {
         app = application as MainApp
         i("Retro Lets Go Activity Started")
 
+        if (intent.hasExtra("arcade_edit")) {
+            edit = true
+            arcade = intent.extras?.getParcelable("arcade_edit")!!
+            binding.arcadeTitle.setText(arcade.title)
+            binding.description.setText(arcade.description)
+            binding.btnAdd.setText(R.string.save_arcade)
+        }
+
         binding.btnAdd.setOnClickListener() {
             arcade.title = binding.arcadeTitle.text.toString()
             arcade.description = binding.description.text.toString()
-            if (arcade.title.isNotEmpty()) {
-                app.arcades.add(arcade.copy())
-                i("Add button pressed: ${arcade}")
-                for (i in app.arcades.indices)
-                { i("Arcade[$i]:${this.app.arcades[i]}") }
-                setResult(RESULT_OK)
-                finish()
-            } else {
+            if (arcade.title.isEmpty()) {
                 Snackbar
-                    .make(it, "Please enter a title", Snackbar.LENGTH_LONG)
+                    .make(it, R.string.enter_arcade_title, Snackbar.LENGTH_LONG)
                     .show()
+            } else {
+                if (edit) {
+                    app.arcades.update(arcade.copy())
+                } else {
+                    app.arcades.create(arcade.copy())
+                }
             }
+            setResult(RESULT_OK)
+            finish()
         }
     }
 

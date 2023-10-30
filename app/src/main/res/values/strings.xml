@@ -5,4 +5,6 @@
     <string name="arcadeDescription">Arcade Description</string>
     <string name="menu_addArcade">Add</string>
     <string name="menu_cancelArcade">Cancel</string>
+    <string name="enter_arcade_title"> Please enter an Arcade Title </string>
+    <string name="save_arcade"> Save Arcade </string>
 </resources>

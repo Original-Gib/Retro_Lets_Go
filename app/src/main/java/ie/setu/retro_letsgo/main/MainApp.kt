@@ -1,13 +1,14 @@
 package ie.setu.retro_letsgo.main
 
 import android.app.Application
+import ie.setu.retro_letsgo.models.ArcadeMemStore
 import ie.setu.retro_letsgo.models.ArcadeModel
 import timber.log.Timber
 import timber.log.Timber.i
 
 class MainApp : Application() {
 
-    val arcades = ArrayList<ArcadeModel>()
+    val arcades = ArcadeMemStore()
 
     override fun onCreate() {
         super.onCreate()

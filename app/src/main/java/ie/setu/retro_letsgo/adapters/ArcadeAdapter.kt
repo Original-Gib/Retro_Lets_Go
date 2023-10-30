@@ -6,7 +6,11 @@ import androidx.recyclerview.widget.RecyclerView
 import ie.setu.retro_letsgo.databinding.CardArcadeBinding
 import ie.setu.retro_letsgo.models.ArcadeModel
 
-class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>) : RecyclerView.Adapter<ArcadeAdapter.MainHolder>() {
+interface ArcadeListener {
+    fun onArcadeClick(arcade: ArcadeModel)
+}
+
+class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private val listener: ArcadeListener) : RecyclerView.Adapter<ArcadeAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardArcadeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -16,7 +20,7 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>) : Recycl
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val arcade = arcades[holder.adapterPosition]
-        holder.bind(arcade)
+        holder.bind(arcade, listener)
     }
 
     override fun getItemCount(): Int = arcades.size
@@ -24,9 +28,12 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>) : Recycl
     class MainHolder(private val binding: CardArcadeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(arcade: ArcadeModel) {
+        fun bind(arcade: ArcadeModel, listener: ArcadeListener) {
             binding.arcadeTitle.text = arcade.title
             binding.arcadeDescription.text = arcade.description
+            binding.root.setOnClickListener { listener.onArcadeClick(arcade) }
         }
     }
 }
+
+

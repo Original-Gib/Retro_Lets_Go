@@ -12,8 +12,10 @@ import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.ActivityArcadeListBinding
 import ie.setu.retro_letsgo.main.MainApp
 import ie.setu.retro_letsgo.adapters.ArcadeAdapter
+import ie.setu.retro_letsgo.adapters.ArcadeListener
+import ie.setu.retro_letsgo.models.ArcadeModel
 
-class ArcadeListActivity : AppCompatActivity() {
+class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityArcadeListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +30,7 @@ class ArcadeListActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = ArcadeAdapter(app.arcades)
+        binding.recyclerView.adapter = ArcadeAdapter(app.arcades.findAll(), this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -46,10 +48,25 @@ class ArcadeListActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    override fun onArcadeClick(arcade: ArcadeModel) {
+        val launcherIntent = Intent(this, ArcadeActivity::class.java)
+        launcherIntent.putExtra("arcade_edit", arcade)
+        getClickResult.launch(launcherIntent)
+    }
+
+    private val getClickResult =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) {
+                if (it.resultCode == Activity.RESULT_OK){
+                    (binding.recyclerView.adapter)?.notifyItemRangeChanged(0, app.arcades.findAll().size)
+                }
+            }
+
+
     private val getResults =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                (binding.recyclerView.adapter)?.notifyItemRangeChanged(0, app.arcades.size)
+                (binding.recyclerView.adapter)?.notifyItemRangeChanged(0, app.arcades.findAll().size)
             }
         }
 }
