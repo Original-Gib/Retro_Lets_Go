@@ -1,3 +1,4 @@
 package ie.setu.retro_letsgo.models
 
-data class ArcadeModel(var title: String = "")
+data class ArcadeModel(var title: String = "",
+                        var description: String = "")

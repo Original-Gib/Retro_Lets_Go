@@ -2,4 +2,7 @@
     <string name="app_name">Retro - Let\'s Go</string>
     <string name="button_addArcade">Add Arcade</string>
     <string name="arcadeTitle">Arcade Title</string>
+    <string name="arcadeDescription">Arcade Description</string>
+    <string name="menu_addArcade">Add</string>
+    <string name="menu_cancelArcade">Cancel</string>
 </resources>
