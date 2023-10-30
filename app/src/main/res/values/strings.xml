@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Retro - Let\'s Go</string>
+    <string name="button_addArcade">Add Arcade</string>
+    <string name="arcadeTitle">Arcade Title</string>
 </resources>
