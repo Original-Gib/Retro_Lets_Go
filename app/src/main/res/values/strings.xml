@@ -7,4 +7,7 @@
     <string name="menu_cancelArcade">Cancel</string>
     <string name="enter_arcade_title"> Please enter an Arcade Title </string>
     <string name="save_arcade"> Save Arcade </string>
+    <string name="button_addImage"> Add Image </string>
+    <string name="select_arcade_image">Select arcade image</string>
+    <string name="change_arcade_image">Change arcade image</string>
 </resources>

@@ -3,6 +3,7 @@ package ie.setu.retro_letsgo.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.databinding.CardArcadeBinding
 import ie.setu.retro_letsgo.models.ArcadeModel
 
@@ -31,6 +32,7 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
         fun bind(arcade: ArcadeModel, listener: ArcadeListener) {
             binding.arcadeTitle.text = arcade.title
             binding.arcadeDescription.text = arcade.description
+            Picasso.get().load(arcade.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onArcadeClick(arcade) }
         }
     }

@@ -28,6 +28,7 @@ class ArcadeMemStore: ArcadeStore {
         if (foundArcade != null) {
             foundArcade.title = arcade.title
             foundArcade.description = arcade.description
+            foundArcade.image = arcade.image
             logAll()
         }
     }
