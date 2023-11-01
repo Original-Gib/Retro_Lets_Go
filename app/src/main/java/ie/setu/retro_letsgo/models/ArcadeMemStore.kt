@@ -29,6 +29,9 @@ class ArcadeMemStore: ArcadeStore {
             foundArcade.title = arcade.title
             foundArcade.description = arcade.description
             foundArcade.image = arcade.image
+            foundArcade.lat = arcade.lat
+            foundArcade.lng = arcade.lng
+            foundArcade.zoom = arcade.zoom
             logAll()
         }
     }

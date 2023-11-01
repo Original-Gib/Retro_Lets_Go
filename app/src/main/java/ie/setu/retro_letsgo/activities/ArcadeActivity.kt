@@ -15,6 +15,7 @@ import ie.setu.retro_letsgo.databinding.ActivityRetroLetsGoBinding
 import ie.setu.retro_letsgo.helpers.showImagePicker
 import ie.setu.retro_letsgo.main.MainApp
 import ie.setu.retro_letsgo.models.ArcadeModel
+import ie.setu.retro_letsgo.models.Location
 import timber.log.Timber.i
 
 
@@ -25,6 +26,7 @@ class ArcadeActivity : AppCompatActivity() {
     var arcade = ArcadeModel()
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +51,7 @@ class ArcadeActivity : AppCompatActivity() {
         }
 
         registerImagePickerCallback()
+        registerMapCallback()
 
         if (intent.hasExtra("arcade_edit")) {
             edit = true
@@ -81,6 +84,18 @@ class ArcadeActivity : AppCompatActivity() {
             setResult(RESULT_OK)
             finish()
         }
+
+        binding.arcadeLocation.setOnClickListener {
+            var location = Location(53.350140, -6.266155, 15f)
+            if (arcade.zoom != 0f) {
+                location.lat =  arcade.lat
+                location.lng = arcade.lng
+                location.zoom = arcade.zoom
+            }
+            val launcherIntent = Intent(this, MapActivity::class.java)
+                .putExtra("location", location)
+            mapIntentLauncher.launch(launcherIntent)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -110,6 +125,26 @@ class ArcadeActivity : AppCompatActivity() {
                                 .load(arcade.image)
                                 .into(binding.arcadeImage)
                             binding.chooseImage.setText(R.string.change_arcade_image)
+                        } // end of if
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
+    }
+
+    private fun registerMapCallback() {
+        mapIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when (result.resultCode) {
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            i("Got Location ${result.data.toString()}")
+                            val location = result.data!!.extras?.getParcelable<Location>("location")!!
+                            i("Location == $location")
+                            arcade.lat = location.lat
+                            arcade.lng = location.lng
+                            arcade.zoom = location.zoom
                         } // end of if
                     }
                     RESULT_CANCELED -> { } else -> { }
