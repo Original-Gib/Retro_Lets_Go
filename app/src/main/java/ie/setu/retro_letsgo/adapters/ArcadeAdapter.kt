@@ -8,7 +8,7 @@ import ie.setu.retro_letsgo.databinding.CardArcadeBinding
 import ie.setu.retro_letsgo.models.ArcadeModel
 
 interface ArcadeListener {
-    fun onArcadeClick(arcade: ArcadeModel)
+    fun onArcadeClick(arcade: ArcadeModel, position: Int)
 }
 
 class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private val listener: ArcadeListener) : RecyclerView.Adapter<ArcadeAdapter.MainHolder>() {
@@ -33,7 +33,7 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
             binding.arcadeTitle.text = arcade.title
             binding.arcadeDescription.text = arcade.description
             Picasso.get().load(arcade.image).resize(200,200).into(binding.imageIcon)
-            binding.root.setOnClickListener { listener.onArcadeClick(arcade) }
+            binding.root.setOnClickListener { listener.onArcadeClick(arcade, adapterPosition) }
         }
     }
 }

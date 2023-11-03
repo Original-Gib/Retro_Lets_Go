@@ -28,12 +28,17 @@ class ArcadeMemStore: ArcadeStore {
         if (foundArcade != null) {
             foundArcade.title = arcade.title
             foundArcade.description = arcade.description
+            foundArcade.phoneNumber = arcade.phoneNumber
             foundArcade.image = arcade.image
             foundArcade.lat = arcade.lat
             foundArcade.lng = arcade.lng
             foundArcade.zoom = arcade.zoom
             logAll()
         }
+    }
+
+    override fun delete(arcade: ArcadeModel) {
+        arcades.remove(arcade)
     }
 
     fun logAll() {

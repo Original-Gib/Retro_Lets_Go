@@ -3,6 +3,7 @@
     <string name="button_addArcade">Add Arcade</string>
     <string name="arcadeTitle">Arcade Title</string>
     <string name="arcadeDescription">Arcade Description</string>
+    <string name="arcadePhoneNumber">Arcade Phone Number</string>
     <string name="menu_addArcade">Add</string>
     <string name="menu_cancelArcade">Cancel</string>
     <string name="enter_arcade_title"> Please enter an Arcade Title </string>
@@ -12,4 +13,5 @@
     <string name="change_arcade_image">Change arcade image</string>
     <string name="button_location">Set Arcade Location</string>
     <string name="title_activity_map">MapActivity</string>
+    <string name="menu_deleteArcade">Delete</string>
 </resources>

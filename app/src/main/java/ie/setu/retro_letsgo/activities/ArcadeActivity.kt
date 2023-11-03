@@ -27,11 +27,11 @@ class ArcadeActivity : AppCompatActivity() {
     lateinit var app: MainApp
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var edit = false
 
         binding = ActivityRetroLetsGoBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -47,7 +47,7 @@ class ArcadeActivity : AppCompatActivity() {
         }
 
         binding.chooseImage.setOnClickListener {
-            showImagePicker(imageIntentLauncher)
+            showImagePicker(imageIntentLauncher,this)
         }
 
         registerImagePickerCallback()
@@ -58,6 +58,7 @@ class ArcadeActivity : AppCompatActivity() {
             arcade = intent.extras?.getParcelable("arcade_edit")!!
             binding.arcadeTitle.setText(arcade.title)
             binding.description.setText(arcade.description)
+            binding.arcadePhoneNumber.setText(arcade.phoneNumber)
             binding.btnAdd.setText(R.string.save_arcade)
             Picasso.get()
                 .load(arcade.image)
@@ -70,6 +71,7 @@ class ArcadeActivity : AppCompatActivity() {
         binding.btnAdd.setOnClickListener() {
             arcade.title = binding.arcadeTitle.text.toString()
             arcade.description = binding.description.text.toString()
+            arcade.phoneNumber = binding.arcadePhoneNumber.text.toString()
             if (arcade.title.isEmpty()) {
                 Snackbar
                     .make(it, R.string.enter_arcade_title, Snackbar.LENGTH_LONG)
@@ -100,14 +102,17 @@ class ArcadeActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_arcade, menu)
+        if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.item_cancel -> {
+            R.id.item_delete -> {
+                setResult(99)
+                app.arcades.delete(arcade)
                 finish()
-            }
+            }        R.id.item_cancel -> { finish() }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -120,7 +125,12 @@ class ArcadeActivity : AppCompatActivity() {
                     RESULT_OK -> {
                         if (result.data != null) {
                             i("Got Result ${result.data!!.data}")
-                            arcade.image = result.data!!.data!!
+
+                            val image = result.data!!.data!!
+                            contentResolver.takePersistableUriPermission(image,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                            arcade.image = image
+
                             Picasso.get()
                                 .load(arcade.image)
                                 .into(binding.arcadeImage)

@@ -18,6 +18,7 @@ import ie.setu.retro_letsgo.models.ArcadeModel
 class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityArcadeListBinding
+    private var position: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityArcadeListBinding.inflate(layoutInflater)
@@ -48,19 +49,24 @@ class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onArcadeClick(arcade: ArcadeModel) {
+    override fun onArcadeClick(arcade: ArcadeModel, pos: Int) {
         val launcherIntent = Intent(this, ArcadeActivity::class.java)
         launcherIntent.putExtra("arcade_edit", arcade)
+        position = pos
         getClickResult.launch(launcherIntent)
     }
 
     private val getClickResult =
         registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()) {
-                if (it.resultCode == Activity.RESULT_OK){
-                    (binding.recyclerView.adapter)?.notifyItemRangeChanged(0, app.arcades.findAll().size)
-                }
+            ActivityResultContracts.StartActivityForResult()
+        ) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                (binding.recyclerView.adapter)?.
+                notifyItemRangeChanged(0,app.arcades.findAll().size)
             }
+            else
+                if (it.resultCode == 99)     (binding.recyclerView.adapter)?.notifyItemRemoved(position)
+        }
 
 
     private val getResults =
