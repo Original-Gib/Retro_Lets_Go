@@ -41,6 +41,10 @@ class ArcadeMemStore: ArcadeStore {
         arcades.remove(arcade)
     }
 
+    override fun findByUserId(userId: String): List<ArcadeModel> {
+        return arcades.filter { it.userId == userId }
+    }
+
     fun logAll() {
         arcades.forEach{ i("${it}")}
     }

@@ -7,4 +7,6 @@ interface ArcadeStore {
     fun update(arcade: ArcadeModel)
 
     fun delete(arcade: ArcadeModel)
+
+    fun findByUserId(id: String): List<ArcadeModel>
 }

@@ -34,6 +34,10 @@ class ArcadeJSONStore(private val context: Context) : ArcadeStore {
         return arcades
     }
 
+    override fun findByUserId(userId: String): List<ArcadeModel> {
+        return arcades.filter { it.userId == userId }
+    }
+
     override fun create(arcade: ArcadeModel) {
         arcade.id = generateRandomId()
         arcades.add(arcade)
@@ -60,6 +64,7 @@ class ArcadeJSONStore(private val context: Context) : ArcadeStore {
         arcades.remove(arcade)
         serialize()
     }
+
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(arcades, listType)

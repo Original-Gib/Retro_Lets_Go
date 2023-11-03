@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.ActivityRetroLetsGoBinding
@@ -28,10 +29,12 @@ class ArcadeActivity : AppCompatActivity() {
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var edit = false
+    lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        firebaseAuth = FirebaseAuth.getInstance()
 
         binding = ActivityRetroLetsGoBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -69,6 +72,10 @@ class ArcadeActivity : AppCompatActivity() {
         }
 
         binding.btnAdd.setOnClickListener() {
+            var currentUserId = firebaseAuth.currentUser?.uid
+            if (currentUserId != null) {
+                arcade.userId = currentUserId
+            }
             arcade.title = binding.arcadeTitle.text.toString()
             arcade.description = binding.description.text.toString()
             arcade.phoneNumber = binding.arcadePhoneNumber.text.toString()

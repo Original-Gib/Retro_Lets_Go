@@ -8,6 +8,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.ActivityArcadeListBinding
 import ie.setu.retro_letsgo.main.MainApp
@@ -19,6 +20,7 @@ class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityArcadeListBinding
     private var position: Int = 0
+    private lateinit var firebaseAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityArcadeListBinding.inflate(layoutInflater)
@@ -26,12 +28,18 @@ class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
         binding.toolbar.title = title
         setSupportActionBar(binding.toolbar)
 
+        firebaseAuth = FirebaseAuth.getInstance()
+
 
         app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = ArcadeAdapter(app.arcades.findAll(), this)
+        val loggedInUser = firebaseAuth.currentUser?.uid
+        if (!loggedInUser.isNullOrEmpty()) {
+            binding.recyclerView.adapter =
+                ArcadeAdapter(app.arcades.findByUserId(loggedInUser), this)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -61,8 +69,13 @@ class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
             ActivityResultContracts.StartActivityForResult()
         ) {
             if (it.resultCode == Activity.RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.arcades.findAll().size)
+                val loggedInUser = firebaseAuth.currentUser?.uid
+                if (!loggedInUser.isNullOrEmpty()) {
+                    (binding.recyclerView.adapter)?.notifyItemRangeChanged(
+                        0,
+                        app.arcades.findByUserId(loggedInUser).size
+                    )
+                }
             }
             else
                 if (it.resultCode == 99)     (binding.recyclerView.adapter)?.notifyItemRemoved(position)
@@ -72,7 +85,13 @@ class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
     private val getResults =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                (binding.recyclerView.adapter)?.notifyItemRangeChanged(0, app.arcades.findAll().size)
+                val loggedInUser = firebaseAuth.currentUser?.uid
+                if (!loggedInUser.isNullOrEmpty()) {
+                    (binding.recyclerView.adapter)?.notifyItemRangeChanged(
+                        0,
+                        app.arcades.findByUserId(loggedInUser).size
+                    )
+                }
             }
         }
 }

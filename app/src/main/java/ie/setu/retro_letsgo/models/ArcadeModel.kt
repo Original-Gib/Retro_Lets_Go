@@ -5,7 +5,8 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ArcadeModel( var id: Long = 0,
+data class ArcadeModel( var userId: String = "",
+                        var id: Long = 0,
                         var title: String = "",
                         var description: String = "",
                         var phoneNumber: String = "",
