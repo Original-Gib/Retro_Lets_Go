@@ -14,4 +14,14 @@
     <string name="button_location">Set Arcade Location</string>
     <string name="title_activity_map">MapActivity</string>
     <string name="menu_deleteArcade">Delete</string>
+    <string name="signup_enterEmail">Enter Email</string>
+    <string name="signup_createPassword">Create Password</string>
+    <string name="signup_confirmPassword">Confirm Password</string>
+    <string name="signup_btn">Sign Up</string>
+    <string name="signup_signIn_redirect">Already Registered? Sign in here</string>
+    <string name="signIn_enterEmail">Enter Email</string>
+    <string name="signIn_enterPassword">Enter Password</string>
+    <string name="signIn_btn">Sign In</string>
+    <string name="signIn_signUp_redirect">Not yet registered? Sign up here</string>
+
 </resources>

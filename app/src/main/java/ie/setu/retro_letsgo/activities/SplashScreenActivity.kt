@@ -17,7 +17,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         handler = Handler()
         handler.postDelayed({
-            val i = Intent(this, ArcadeListActivity::class.java)
+            val i = Intent(this, SignUpActivity::class.java)
             startActivity(i)
             overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
             finish()
