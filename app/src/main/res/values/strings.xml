@@ -23,5 +23,10 @@
     <string name="signIn_enterPassword">Enter Password</string>
     <string name="signIn_btn">Sign In</string>
     <string name="signIn_signUp_redirect">Not yet registered? Sign up here</string>
+    <string name="title_activity_arcade_maps">Map of All Arcades</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
 
 </resources>

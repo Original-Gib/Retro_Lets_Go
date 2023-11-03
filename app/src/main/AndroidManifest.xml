@@ -17,6 +17,11 @@
         android:theme="@style/Theme.RetroLetsGo"
         tools:targetApi="31">
         <activity
+            android:name=".activities.ArcadeMapsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_arcade_maps"
+            android:theme="@style/Theme.RetroLetsGo" />
+        <activity
             android:name=".activities.SignInActivity"
             android:exported="false" />
         <activity

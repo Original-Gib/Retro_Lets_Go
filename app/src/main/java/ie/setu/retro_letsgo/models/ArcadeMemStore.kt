@@ -37,6 +37,11 @@ class ArcadeMemStore: ArcadeStore {
         }
     }
 
+    override fun findById(id:Long) : ArcadeModel? {
+        val foundArcade: ArcadeModel? = arcades.find { it.id == id }
+        return foundArcade
+    }
+
     override fun delete(arcade: ArcadeModel) {
         arcades.remove(arcade)
     }

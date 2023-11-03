@@ -38,6 +38,10 @@ class ArcadeJSONStore(private val context: Context) : ArcadeStore {
         return arcades.filter { it.userId == userId }
     }
 
+    override fun findById(id: Long): ArcadeModel? {
+        return arcades.find { it.id == id }
+    }
+
     override fun create(arcade: ArcadeModel) {
         arcade.id = generateRandomId()
         arcades.add(arcade)

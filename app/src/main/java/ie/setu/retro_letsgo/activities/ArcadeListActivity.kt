@@ -18,6 +18,7 @@ import ie.setu.retro_letsgo.adapters.ArcadeAdapter
 import ie.setu.retro_letsgo.adapters.ArcadeListener
 import ie.setu.retro_letsgo.models.ArcadeModel
 
+
 class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
     lateinit var app: MainApp
     private lateinit var binding: ActivityArcadeListBinding
@@ -55,6 +56,10 @@ class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
                 val launcherIntent = Intent(this, ArcadeActivity::class.java)
                 getResults.launch(launcherIntent)
             }
+            R.id.item_map -> {
+                val launcherIntent = Intent(this, ArcadeMapsActivity::class.java)
+                mapIntentLauncher.launch(launcherIntent)
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -89,5 +94,10 @@ class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
                 }
             }
         }
+
+    private val mapIntentLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        )    { }
 
 }

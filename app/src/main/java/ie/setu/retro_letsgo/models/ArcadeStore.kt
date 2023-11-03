@@ -9,4 +9,6 @@ interface ArcadeStore {
     fun delete(arcade: ArcadeModel)
 
     fun findByUserId(id: String): List<ArcadeModel>
+
+    fun findById(id:Long) : ArcadeModel?
 }
