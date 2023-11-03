@@ -4,10 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.ajalt.timberkt.i
 import com.google.firebase.auth.FirebaseAuth
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.ActivityArcadeListBinding
@@ -64,34 +66,28 @@ class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
         getClickResult.launch(launcherIntent)
     }
 
-    private val getClickResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val loggedInUser = firebaseAuth.currentUser?.uid
-                if (!loggedInUser.isNullOrEmpty()) {
-                    (binding.recyclerView.adapter)?.notifyItemRangeChanged(
-                        0,
-                        app.arcades.findByUserId(loggedInUser).size
-                    )
-                }
+    private val getClickResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        if (it.resultCode == Activity.RESULT_OK) {
+            val loggedInUser = firebaseAuth.currentUser?.uid
+            if (!loggedInUser.isNullOrEmpty()) {
+                val filteredArcades = app.arcades.findByUserId(loggedInUser)
+                (binding.recyclerView.adapter as ArcadeAdapter).updateDataSet(filteredArcades)
             }
-            else
-                if (it.resultCode == 99)     (binding.recyclerView.adapter)?.notifyItemRemoved(position)
+        } else if (it.resultCode == 99) {
+            // Handle arcade deletion here
+            (binding.recyclerView.adapter as ArcadeAdapter).removeItem(position)
         }
-
+    }
 
     private val getResults =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 val loggedInUser = firebaseAuth.currentUser?.uid
                 if (!loggedInUser.isNullOrEmpty()) {
-                    (binding.recyclerView.adapter)?.notifyItemRangeChanged(
-                        0,
-                        app.arcades.findByUserId(loggedInUser).size
-                    )
+                    val filteredArcades = app.arcades.findByUserId(loggedInUser)
+                    (binding.recyclerView.adapter as ArcadeAdapter).updateDataSet(filteredArcades)
                 }
             }
         }
+
 }

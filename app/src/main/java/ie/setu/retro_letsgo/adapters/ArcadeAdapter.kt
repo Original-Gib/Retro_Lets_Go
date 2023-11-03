@@ -26,6 +26,18 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
 
     override fun getItemCount(): Int = arcades.size
 
+    fun updateDataSet(newArcades: List<ArcadeModel>) {
+        arcades = newArcades
+        notifyDataSetChanged() // Notify the adapter that the dataset has changed
+    }
+
+    fun removeItem(position: Int) {
+        if (position in 0 until arcades.size) {
+            arcades = arcades.toMutableList().apply { removeAt(position) }
+            notifyItemRemoved(position)
+        }
+    }
+
     class MainHolder(private val binding: CardArcadeBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
