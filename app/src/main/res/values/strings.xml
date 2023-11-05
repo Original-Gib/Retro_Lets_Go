@@ -28,5 +28,16 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
+    <string name="gameTitle">Game Title</string>
+    <string name="gameDescription">Game Description</string>
+    <string name="gameSystem">Game System</string>
+    <string name="gameHighScore">High Score</string>
+    <string name="button_addGame">Add Game</string>
+    <string name="menu_addGame">Add</string>
+    <string name="menu_cancelGame">Cancel</string>
+    <string name="enter_game_title"> Please enter a Game Title </string>
+    <string name="save_game"> Save Game </string>
+    <string name="take_picture"> Take Picture </string>
+
 
 </resources>
