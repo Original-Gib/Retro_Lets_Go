@@ -28,7 +28,7 @@ class ArcadeListActivity : AppCompatActivity(), ArcadeListener {
         super.onCreate(savedInstanceState)
         binding = ActivityArcadeListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.toolbar.title = title
+        binding.toolbar.title = "Arcades"
         setSupportActionBar(binding.toolbar)
 
         firebaseAuth = FirebaseAuth.getInstance()

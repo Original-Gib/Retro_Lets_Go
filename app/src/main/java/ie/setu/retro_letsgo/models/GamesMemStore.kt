@@ -23,6 +23,14 @@ class GamesMemStore: GameStore {
         }
     }
 
+    override fun delete(game: GameModel) {
+        games.remove(game)
+    }
+
+    override fun findByUserId(userId: String): List<GameModel> {
+        return games.filter { it.userId == userId }
+    }
+
     fun logAll() {
         games.forEach{ i("${it}") }
     }

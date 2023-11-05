@@ -9,15 +9,13 @@ import android.provider.MediaStore
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.ActivityGamesBinding
 import ie.setu.retro_letsgo.main.MainApp
 import ie.setu.retro_letsgo.models.GameModel
 import timber.log.Timber.i
-import java.security.AllPermission
 
 
 class GamesActivity : AppCompatActivity() {
@@ -27,6 +25,7 @@ class GamesActivity : AppCompatActivity() {
     lateinit var app : MainApp
     var edit = false
     val REQUEST_IMAGE_CAPTURE = 100
+    lateinit var firebaseAuth: FirebaseAuth
 
 
 
@@ -38,6 +37,8 @@ class GamesActivity : AppCompatActivity() {
 
         binding.toolbarAdd.title = "Retro Let's Go - Games"
         setSupportActionBar(binding.toolbarAdd)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         app = application as MainApp
 
@@ -60,11 +61,19 @@ class GamesActivity : AppCompatActivity() {
             binding.btnAddGame.setText(R.string.save_game)
             binding.gameTitle.setText(game.gameTitle)
             binding.gameDescription.setText(game.gameDescription)
+            binding.gameSystem.setText(game.gameSystem)
+            binding.gameHighScore.setText(game.highScore)
         }
 
         binding.btnAddGame.setOnClickListener() {
+            var currentUserId = firebaseAuth.currentUser?.uid
+            if (currentUserId != null) {
+                game.userId = currentUserId
+            }
             game.gameTitle = binding.gameTitle.text.toString()
             game.gameDescription = binding.gameDescription.text.toString()
+            game.gameSystem = binding.gameSystem.text.toString()
+            game.highScore = binding.gameHighScore.text.toString()
             if (game.gameTitle.isEmpty()) {
                 Snackbar.make(it, R.string.enter_game_title, Snackbar.LENGTH_LONG)
                     .show()
@@ -92,14 +101,17 @@ class GamesActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_game, menu)
+        if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.item_cancel -> {
+            R.id.item_delete -> {
+                setResult(99)
+                app.games.delete(game)
                 finish()
-            }
+            }        R.id.item_cancel -> { finish() }
         }
         return super.onOptionsItemSelected(item)
     }

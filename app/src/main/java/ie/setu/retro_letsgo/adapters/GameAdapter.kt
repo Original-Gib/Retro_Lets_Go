@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ie.setu.retro_letsgo.databinding.CardGamesBinding
+import ie.setu.retro_letsgo.models.ArcadeModel
 import ie.setu.retro_letsgo.models.GameModel
 
 interface GameListener {
-    fun onGameClick(game: GameModel)
+    fun onGameClick(game: GameModel, position: Int)
 }
 class GameAdapter constructor(private var games: List<GameModel>,
                               private val listener: GameListener) :
@@ -26,13 +27,25 @@ class GameAdapter constructor(private var games: List<GameModel>,
 
     override fun getItemCount(): Int = games.size
 
+    fun updateDataSet(newGames: List<GameModel>) {
+        games = newGames
+        notifyDataSetChanged() // Notify the adapter that the dataset has changed
+    }
+
+    fun removeItem(position: Int) {
+        if (position in 0 until games.size) {
+            games = games.toMutableList().apply { removeAt(position) }
+            notifyItemRemoved(position)
+        }
+    }
+
     class MainHolder(private val binding : CardGamesBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(game: GameModel, listener: GameListener) {
             binding.gameTitle.text = game.gameTitle
             binding.gameDescription.text = game.gameDescription
-            binding.root.setOnClickListener { listener.onGameClick(game) }
+            binding.root.setOnClickListener { listener.onGameClick(game, adapterPosition) }
         }
     }
 }

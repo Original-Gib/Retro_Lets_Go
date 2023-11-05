@@ -8,7 +8,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import ie.setu.retro_letsgo.R
+import ie.setu.retro_letsgo.adapters.ArcadeAdapter
 import ie.setu.retro_letsgo.adapters.GameAdapter
 import ie.setu.retro_letsgo.adapters.GameListener
 import ie.setu.retro_letsgo.databinding.ActivityGamesListBinding
@@ -20,20 +22,28 @@ class GamesListActivity : AppCompatActivity(), GameListener {
 
     lateinit var app: MainApp
     private lateinit var binding: ActivityGamesListBinding
+    private var position: Int = 0
+    lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGamesListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.toolbar.title = "Retro Let's Go - Games"
+        binding.toolbar.title = "Games"
         setSupportActionBar(binding.toolbar)
+
+        firebaseAuth = FirebaseAuth.getInstance()
 
         app = application as MainApp
 
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
-        binding.recyclerView.adapter = GameAdapter(app.games.findAll(), this)
+        val loggedInUser = firebaseAuth.currentUser?.uid
+        if (!loggedInUser.isNullOrEmpty()) {
+            binding.recyclerView.adapter =
+                GameAdapter(app.games.findByUserId(loggedInUser), this)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -45,35 +55,41 @@ class GamesListActivity : AppCompatActivity(), GameListener {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, GamesActivity::class.java)
-                getResult.launch(launcherIntent)
+                getResults.launch(launcherIntent)
             }
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private val getResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
+    private val getResults =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.games.findAll().size)
+                val loggedInUser = firebaseAuth.currentUser?.uid
+                if (!loggedInUser.isNullOrEmpty()) {
+                    val filteredGames = app.games.findByUserId(loggedInUser)
+                    (binding.recyclerView.adapter as GameAdapter).updateDataSet(filteredGames)
+                }
             }
         }
 
-    override fun onGameClick(game: GameModel) {
+    override fun onGameClick(game: GameModel, pos: Int) {
         val launcherIntent = Intent(this, GamesActivity::class.java)
         launcherIntent.putExtra("game_edit", game)
+        position = pos
         getClickResult.launch(launcherIntent)
     }
 
     private val getClickResult =
-        registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()
-        ) {
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                (binding.recyclerView.adapter)?.
-                notifyItemRangeChanged(0,app.games.findAll().size)
+                val loggedInUser = firebaseAuth.currentUser?.uid
+                if (!loggedInUser.isNullOrEmpty()) {
+                    val filteredGames = app.games.findByUserId(loggedInUser)
+                    (binding.recyclerView.adapter as GameAdapter).updateDataSet(filteredGames)
+                }
+            } else if (it.resultCode == 99) {
+                // Handle arcade deletion here
+                (binding.recyclerView.adapter as GameAdapter).removeItem(position)
             }
         }
 
