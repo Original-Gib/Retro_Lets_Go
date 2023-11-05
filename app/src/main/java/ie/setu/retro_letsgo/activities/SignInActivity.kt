@@ -14,22 +14,22 @@ class SignInActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivitySignInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //init firebase
         firebaseAuth = FirebaseAuth.getInstance()
 
+        //Send user to the Signup activity if this is pressed
         binding.textView.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
 
+        // handle sign in of user if the button on the page is pressed, error handling in place
         binding.button.setOnClickListener{
             val email = binding.email.text.toString()
             val password = binding.password.text.toString()
-
-
             if (email.isNotEmpty() && password.isNotEmpty()) {
                     firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener{
                         if (it.isSuccessful) {

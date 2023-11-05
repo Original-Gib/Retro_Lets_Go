@@ -20,42 +20,44 @@ import ie.setu.retro_letsgo.models.Location
 import timber.log.Timber.i
 
 
-
+/*
+ Class is used to handle the creation and editing of arcades,
+ */
 class ArcadeActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityRetroLetsGoBinding
+    //init variables
     var arcade = ArcadeModel()
+    var edit = false
     lateinit var app: MainApp
+    lateinit var firebaseAuth: FirebaseAuth
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
-    var edit = false
-    lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var binding: ActivityRetroLetsGoBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        firebaseAuth = FirebaseAuth.getInstance()
-
         binding = ActivityRetroLetsGoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
-
         app = application as MainApp
+
+        //init firebase
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        //callbacks for image picker and maps
+        registerImagePickerCallback()
+        registerMapCallback()
+
         i("Retro Lets Go Activity Started")
 
-        binding.chooseImage.setOnClickListener {
-            i("Select image")
-        }
-
+        //launch image picker if choose image button is pressed
         binding.chooseImage.setOnClickListener {
             showImagePicker(imageIntentLauncher,this)
         }
 
-        registerImagePickerCallback()
-        registerMapCallback()
-
+        //If intent passed has arcade edit, load the arcade view populated with arcade details
         if (intent.hasExtra("arcade_edit")) {
             edit = true
             arcade = intent.extras?.getParcelable("arcade_edit")!!
@@ -71,6 +73,7 @@ class ArcadeActivity : AppCompatActivity() {
             }
         }
 
+        //Add an arcade when add button is pressed
         binding.btnAdd.setOnClickListener() {
             var currentUserId = firebaseAuth.currentUser?.uid
             if (currentUserId != null) {
@@ -94,6 +97,7 @@ class ArcadeActivity : AppCompatActivity() {
             finish()
         }
 
+        //Open the map activty when the arcade location button is pressed
         binding.arcadeLocation.setOnClickListener {
             var location = Location(53.350140, -6.266155, 15f)
             if (arcade.zoom != 0f) {
@@ -107,12 +111,14 @@ class ArcadeActivity : AppCompatActivity() {
         }
     }
 
+    //Inflate the options for the arcade menu
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_arcade, menu)
         if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
+    //Handle where to send user if an option is selected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_delete -> {
@@ -124,6 +130,7 @@ class ArcadeActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    //Function to register the image picker
     private fun registerImagePickerCallback() {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
@@ -149,6 +156,7 @@ class ArcadeActivity : AppCompatActivity() {
             }
     }
 
+    // function to register the map
     private fun registerMapCallback() {
         mapIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())

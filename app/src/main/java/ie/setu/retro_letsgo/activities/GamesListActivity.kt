@@ -20,23 +20,25 @@ import ie.setu.retro_letsgo.models.GameModel
 
 class GamesListActivity : AppCompatActivity(), GameListener {
 
-    lateinit var app: MainApp
-    private lateinit var binding: ActivityGamesListBinding
+    //declare variables
     private var position: Int = 0
+    lateinit var app: MainApp
     lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var binding: ActivityGamesListBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGamesListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.toolbar.title = "Games"
         setSupportActionBar(binding.toolbar)
-
-        firebaseAuth = FirebaseAuth.getInstance()
-
         app = application as MainApp
 
+        //init firebase
+        firebaseAuth = FirebaseAuth.getInstance()
+
+
+        //Gets users games by userID and displays them on the list view
         val layoutManager = LinearLayoutManager(this)
         binding.recyclerView.layoutManager = layoutManager
         val loggedInUser = firebaseAuth.currentUser?.uid
@@ -46,19 +48,32 @@ class GamesListActivity : AppCompatActivity(), GameListener {
         }
     }
 
+    //inflates the games list manu options
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_game_list, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
+    //Handles action on selection of a menu option
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_add -> {
                 val launcherIntent = Intent(this, GamesActivity::class.java)
                 getResults.launch(launcherIntent)
             }
+            R.id.item_arcade -> {
+                val launcherIntent = Intent(this, ArcadeListActivity::class.java)
+                getResults.launch(launcherIntent)
+            }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onGameClick(game: GameModel, pos: Int) {
+        val launcherIntent = Intent(this, GamesActivity::class.java)
+        launcherIntent.putExtra("game_edit", game)
+        position = pos
+        getClickResult.launch(launcherIntent)
     }
 
     private val getResults =
@@ -72,13 +87,6 @@ class GamesListActivity : AppCompatActivity(), GameListener {
             }
         }
 
-    override fun onGameClick(game: GameModel, pos: Int) {
-        val launcherIntent = Intent(this, GamesActivity::class.java)
-        launcherIntent.putExtra("game_edit", game)
-        position = pos
-        getClickResult.launch(launcherIntent)
-    }
-
     private val getClickResult =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
@@ -88,7 +96,7 @@ class GamesListActivity : AppCompatActivity(), GameListener {
                     (binding.recyclerView.adapter as GameAdapter).updateDataSet(filteredGames)
                 }
             } else if (it.resultCode == 99) {
-                // Handle arcade deletion here
+                // Handle game deletion here
                 (binding.recyclerView.adapter as GameAdapter).removeItem(position)
             }
         }

@@ -20,28 +20,26 @@ import timber.log.Timber.i
 
 class GamesActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityGamesBinding
+    //declare variables
     var game = GameModel()
-    lateinit var app : MainApp
     var edit = false
     val REQUEST_IMAGE_CAPTURE = 100
     lateinit var firebaseAuth: FirebaseAuth
-
-
+    lateinit var app : MainApp
+    private lateinit var binding: ActivityGamesBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityGamesBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.toolbarAdd.title = "Retro Let's Go - Games"
         setSupportActionBar(binding.toolbarAdd)
-
-        firebaseAuth = FirebaseAuth.getInstance()
-
         app = application as MainApp
 
+        //init firebase
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        //Handle process for when takePicture button is pressed
         binding.takePicture.setOnClickListener {
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
@@ -52,9 +50,9 @@ class GamesActivity : AppCompatActivity() {
             }
         }
 
-
         i("Game Activity started...")
 
+        //If intent passed has game edit, load the game view populated with game details
         if (intent.hasExtra("game_edit")) {
             edit = true
             game = intent.extras?.getParcelable("game_edit")!!
@@ -65,6 +63,7 @@ class GamesActivity : AppCompatActivity() {
             binding.gameHighScore.setText(game.highScore)
         }
 
+        //handles if addGame button is pressed
         binding.btnAddGame.setOnClickListener() {
             var currentUserId = firebaseAuth.currentUser?.uid
             if (currentUserId != null) {
@@ -90,6 +89,7 @@ class GamesActivity : AppCompatActivity() {
 
     }
 
+    //Process for binding captured image to a bitmap
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             val imageBitmap = data?.extras?.get("data") as Bitmap
@@ -99,12 +99,14 @@ class GamesActivity : AppCompatActivity() {
         }
     }
 
+    //handles display of options for the user in the game view
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_game, menu)
         if (edit) menu.getItem(0).isVisible = true
         return super.onCreateOptionsMenu(menu)
     }
 
+    //handles what to do if an option is selected
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.item_delete -> {

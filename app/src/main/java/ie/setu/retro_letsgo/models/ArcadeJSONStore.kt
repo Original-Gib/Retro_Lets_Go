@@ -29,26 +29,30 @@ class ArcadeJSONStore(private val context: Context) : ArcadeStore {
         }
     }
 
+    //finds all arcades
     override fun findAll(): MutableList<ArcadeModel> {
         logAll()
         return arcades
     }
 
+    //finds arcade by userID
     override fun findByUserId(userId: String): List<ArcadeModel> {
         return arcades.filter { it.userId == userId }
     }
 
+    //Finds arcade by ID
     override fun findById(id: Long): ArcadeModel? {
         return arcades.find { it.id == id }
     }
 
+    //creates a new arcade
     override fun create(arcade: ArcadeModel) {
         arcade.id = generateRandomId()
         arcades.add(arcade)
         serialize()
     }
 
-
+    //updates an existing arcade
     override fun update(arcade: ArcadeModel) {
         val arcadesList = findAll() as ArrayList<ArcadeModel>
         var foundArcade: ArcadeModel? = arcadesList.find { p -> p.id == arcade.id }
@@ -64,22 +68,26 @@ class ArcadeJSONStore(private val context: Context) : ArcadeStore {
         serialize()
     }
 
+    //deletes and arcade
     override fun delete(arcade: ArcadeModel) {
         arcades.remove(arcade)
         serialize()
     }
 
 
+    //serialises the data to json formate
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(arcades, listType)
         write(context, JSON_FILE, jsonString)
     }
 
+    //reads the data from a json file
     private fun deserialize() {
         val jsonString = read(context, JSON_FILE)
         arcades = gsonBuilder.fromJson(jsonString, listType)
     }
 
+    //logs each of the arcades
     private fun logAll() {
         arcades.forEach { Timber.i("$it") }
     }

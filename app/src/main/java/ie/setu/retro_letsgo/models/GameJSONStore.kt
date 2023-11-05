@@ -25,11 +25,13 @@ class GameJSONStore(private val context: Context) : GameStore {
         }
     }
 
+    //finds all games
     override fun findAll(): MutableList<GameModel> {
         logAll()
         return games
     }
 
+    //creates a new game
     override fun create(game: GameModel) {
         game.id = generateRandomId()
         games.add(game)
@@ -37,6 +39,7 @@ class GameJSONStore(private val context: Context) : GameStore {
     }
 
 
+    //updates a game with new details
     override fun update(game: GameModel) {
         val gamesList = findAll() as ArrayList<GameModel>
         var foundGame: GameModel? = gamesList.find { p -> p.id == game.id }
@@ -49,11 +52,13 @@ class GameJSONStore(private val context: Context) : GameStore {
         serialize()
     }
 
+    //deletes a game
     override fun delete(game: GameModel) {
         games.remove(game)
         serialize()
     }
 
+    //finds a game by the user ID
     override fun findByUserId(userId: String): List<GameModel> {
         return games.filter { it.userId == userId }
     }

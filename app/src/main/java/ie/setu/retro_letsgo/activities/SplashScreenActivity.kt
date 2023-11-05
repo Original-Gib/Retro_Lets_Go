@@ -15,6 +15,7 @@ class SplashScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
 
+        //delay moving user from the splash screen to the signup activity
         handler = Handler()
         handler.postDelayed({
             val i = Intent(this, SignUpActivity::class.java)

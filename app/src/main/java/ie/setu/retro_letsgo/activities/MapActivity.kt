@@ -18,9 +18,9 @@ import ie.setu.retro_letsgo.models.Location
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener, GoogleMap.OnMarkerClickListener {
 
+    private var location = Location()
     private lateinit var map: GoogleMap
     private lateinit var binding: ActivityMapBinding
-    private var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,9 +47,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
     }
 
     override fun onMarkerDrag(p0: Marker) {
-
     }
 
+    //updates the lat and lng if once the marker is dragged
     override fun onMarkerDragEnd(marker: Marker) {
         location.lat = marker.position.latitude
         location.lng = marker.position.longitude
@@ -57,7 +57,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
     }
 
     override fun onMarkerDragStart(p0: Marker) {
-
     }
 
     override fun onBackPressed() {
@@ -68,6 +67,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerD
         super.onBackPressed()
     }
 
+    //display location details if the marker is pressed
     override fun onMarkerClick(marker: Marker): Boolean {
         val loc = LatLng(location.lat, location.lng)
         marker.snippet = "GPS : $loc"

@@ -6,11 +6,19 @@
         android:id="@+id/item_add"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/menu_addArcade"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:iconTint="@color/black"/>
 
     <item
         android:id="@+id/item_map"
         android:icon="@android:drawable/ic_menu_mapmode"
         android:title="@string/menu_addArcade"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        android:iconTint="@color/black"/>
+
+    <item
+        android:id="@+id/item_games"
+        android:title="Games"
+        android:icon="@drawable/baseline_sports_esports_24"
+        app:showAsAction="always" />
 </menu>

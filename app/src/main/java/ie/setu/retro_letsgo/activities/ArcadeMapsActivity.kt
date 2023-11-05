@@ -13,8 +13,12 @@ import ie.setu.retro_letsgo.databinding.ActivityArcadeMapsBinding
 import ie.setu.retro_letsgo.databinding.ContentArcadeMapsBinding
 import ie.setu.retro_letsgo.main.MainApp
 
+/*
+Class is used to handle the display of arcades on maps for a user
+ */
 class ArcadeMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener {
 
+    //init variables
     private lateinit var binding: ActivityArcadeMapsBinding
     private lateinit var contentBinding: ContentArcadeMapsBinding
     lateinit var map: GoogleMap
@@ -23,18 +27,15 @@ class ArcadeMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        //Init firebase
         firebaseAuth = FirebaseAuth.getInstance()
 
         app = application as MainApp
-
         binding = ActivityArcadeMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
         contentBinding = ContentArcadeMapsBinding.bind(binding.root)
         contentBinding.mapView.onCreate(savedInstanceState)
-
         contentBinding.mapView.getMapAsync {
             map = it
             configureMap()

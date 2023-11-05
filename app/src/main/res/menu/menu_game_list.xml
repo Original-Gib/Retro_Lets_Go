@@ -6,5 +6,12 @@
         android:id="@+id/item_add"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/menu_addGame"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:iconTint="@color/black" />
+
+    <item
+        android:id="@+id/item_arcade"
+        android:title="Arcades"
+        android:icon="@drawable/baseline_store_mall_directory_24"
+        app:showAsAction="always"/>
 </menu>
