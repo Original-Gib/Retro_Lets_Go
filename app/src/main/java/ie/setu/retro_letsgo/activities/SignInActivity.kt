@@ -7,6 +7,7 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.ActivitySignInBinding
+import ie.setu.retro_letsgo.fragments.ArcadeListFragment
 
 class SignInActivity : AppCompatActivity() {
 
@@ -33,7 +34,7 @@ class SignInActivity : AppCompatActivity() {
             if (email.isNotEmpty() && password.isNotEmpty()) {
                     firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener{
                         if (it.isSuccessful) {
-                            val intent = Intent(this, GamesListActivity::class.java)
+                            val intent = Intent(this, ArcadeListFragment::class.java)
                             startActivity(intent)
                         } else {
                             Toast.makeText(this, "Error signing in", Toast.LENGTH_SHORT).show()

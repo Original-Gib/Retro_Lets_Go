@@ -11,7 +11,7 @@
         android:id="@+id/appBarLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:background="@color/color_secondary"
         android:fitsSystemWindows="true"
         app:elevation="0dip"
         app:layout_constraintBottom_toTopOf="@+id/include"
@@ -24,7 +24,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="@color/colorPrimary" />
+            app:titleTextColor="@color/color_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <include

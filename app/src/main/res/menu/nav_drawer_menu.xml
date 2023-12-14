@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/arcadeListFragment"
+            android:icon="@drawable/baseline_push_pin_24"
+            android:title="@string/action_arcadeList" />
+
+        <item
+            android:id="@+id/gameListFragment"
+            android:icon="@drawable/baseline_videogame_asset_24"
+            android:title="@string/action_gameList" />
+    </group>
+
+    <item android:title="@string/group_communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/baseline_share_24"
+                android:title="@string/action_share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/baseline_email_24"
+                android:title="@string/action_send" />
+        </menu>
+    </item>
+</menu>

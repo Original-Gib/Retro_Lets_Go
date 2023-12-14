@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/arcadeListFragment">
+
+    <fragment
+        android:id="@+id/arcadeFragment"
+        android:name="ie.setu.retro_letsgo.fragments.ArcadeFragment"
+        android:label="fragment_arcade"
+        tools:layout="@layout/fragment_arcade" >
+        <action
+            android:id="@+id/action_arcadeFragment_to_arcadeListFragment"
+            app:destination="@id/arcadeListFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_arcadeFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+        <action
+            android:id="@+id/action_arcadeFragment_to_gameListFragment"
+            app:destination="@id/gameListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/arcadeListFragment"
+        android:name="ie.setu.retro_letsgo.fragments.ArcadeListFragment"
+        android:label="fragment_arcade_list"
+        tools:layout="@layout/fragment_arcade_list" >
+        <action
+            android:id="@+id/action_arcadeListFragment_to_arcadeFragment"
+            app:destination="@id/arcadeFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+        <action
+            android:id="@+id/action_arcadeListFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+        <action
+            android:id="@+id/action_arcadeListFragment_to_gameListFragment"
+            app:destination="@id/gameListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="ie.setu.retro_letsgo.fragments.gameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/action_gameFragment_to_arcadeFragment"
+            app:destination="@id/arcadeFragment" />
+        <action
+            android:id="@+id/action_gameFragment_to_arcadeListFragment"
+            app:destination="@id/arcadeListFragment" />
+        <action
+            android:id="@+id/action_gameFragment_to_gameListFragment"
+            app:destination="@id/gameListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameListFragment"
+        android:name="ie.setu.retro_letsgo.fragments.GameListFragment"
+        android:label="fragment_game_list"
+        tools:layout="@layout/fragment_game_list" >
+        <action
+            android:id="@+id/action_gameListFragment_to_arcadeListFragment"
+            app:destination="@id/arcadeListFragment" />
+        <action
+            android:id="@+id/action_gameListFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+        <action
+            android:id="@+id/action_gameListFragment_to_arcadeFragment"
+            app:destination="@id/arcadeFragment" />
+    </fragment>
+
+</navigation>

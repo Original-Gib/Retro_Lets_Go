@@ -24,6 +24,9 @@
     <string name="signIn_btn">Sign In</string>
     <string name="signIn_signUp_redirect">Not yet registered? Sign up here</string>
     <string name="title_activity_arcade_maps">Map of All Arcades</string>
+    <string name="arcade_added">Arcade Added!</string>
+    <string name="game_added">Game Added!</string>
+
     <!-- Strings used for fragments for navigation -->
     <string name="next">Next</string>
     <string name="previous">Previous</string>
@@ -38,6 +41,20 @@
     <string name="enter_game_title"> Please enter a Game Title </string>
     <string name="save_game"> Save Game </string>
     <string name="take_picture"> Take Picture </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="action_arcade">Add an Arcade</string>
+    <string name="action_arcadeList">Your Arcades</string>
+    <string name="action_game">Add a Game</string>
+    <string name="action_gameList">Your Games</string>
 
+    <string name="action_share">Share</string>
+    <string name="action_send">Send</string>
+    <string name="group_communicate">Communicate</string>
+
+    <string name="nav_header_title">Retro - Let\'s Go</string>
+    <string name="nav_header_subtitle">homer@simpson.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

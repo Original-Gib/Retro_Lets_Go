@@ -1,0 +1,73 @@
+package ie.setu.retro_letsgo.fragments
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.navigation.findNavController
+import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.LinearLayoutManager
+import ie.setu.retro_letsgo.R
+import ie.setu.retro_letsgo.adapters.GameAdapter
+import ie.setu.retro_letsgo.databinding.FragmentGameListBinding
+import ie.setu.retro_letsgo.main.MainApp
+
+
+class GameListFragment : Fragment() {
+
+    private var _fragBinding: FragmentGameListBinding? = null
+    private val fragBinding get() = _fragBinding!!
+    lateinit var app: MainApp
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        app = activity?.application as MainApp
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _fragBinding = FragmentGameListBinding.inflate(inflater, container, false)
+        val root = fragBinding.root
+        val toolbar: Toolbar = root.findViewById(R.id.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+        activity?.title = "Your Games"
+        fragBinding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+
+
+        val adapter = GameAdapter(app.games.findAll())
+        fragBinding.recyclerView.adapter = adapter
+
+        return root
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() =
+            GameListFragment().apply {
+                arguments = Bundle().apply { }
+            }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _fragBinding = null
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_game_list, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return NavigationUI.onNavDestinationSelected(item,
+            requireView().findNavController()) || super.onOptionsItemSelected(item)
+    }
+}

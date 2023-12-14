@@ -5,13 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ie.setu.retro_letsgo.activities.ArcadeActivity">
+    tools:context="ie.setu.retro_letsgo.fragments.ArcadeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
+        android:background="@color/color_secondary"
         android:fitsSystemWindows="true"
         app:elevation="0dip"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,7 +23,7 @@
             android:id="@+id/toolbarAdd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="@color/colorPrimary" />
+            app:titleTextColor="@color/color_primary" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,6 +84,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:shadowColor="@color/color_primary"
+            android:backgroundTint="@color/color_secondary"
             android:text="@string/button_addArcade"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -93,6 +95,7 @@
             android:id="@+id/chooseImage"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/color_secondary"
             android:layout_marginTop="8dp"
             android:text="@string/button_addImage"
             app:layout_constraintStart_toStartOf="@+id/btnAdd"
@@ -104,6 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:backgroundTint="@color/color_secondary"
             android:text="@string/button_location"
             app:layout_constraintEnd_toEndOf="@+id/btnAdd"
             app:layout_constraintHorizontal_bias="1.0"

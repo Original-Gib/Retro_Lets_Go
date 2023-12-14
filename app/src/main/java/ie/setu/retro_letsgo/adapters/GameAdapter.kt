@@ -10,8 +10,7 @@ import ie.setu.retro_letsgo.models.GameModel
 interface GameListener {
     fun onGameClick(game: GameModel, position: Int)
 }
-class GameAdapter constructor(private var games: List<GameModel>,
-                              private val listener: GameListener) :
+class GameAdapter constructor(private var games: List<GameModel>) :
     RecyclerView.Adapter<GameAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
@@ -22,7 +21,7 @@ class GameAdapter constructor(private var games: List<GameModel>,
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
         val game = games[holder.adapterPosition]
-        holder.bind(game, listener)
+        holder.bind(game)
     }
 
     override fun getItemCount(): Int = games.size
@@ -42,10 +41,9 @@ class GameAdapter constructor(private var games: List<GameModel>,
     class MainHolder(private val binding : CardGamesBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(game: GameModel, listener: GameListener) {
+        fun bind(game: GameModel) {
             binding.gameTitle.text = game.gameTitle
             binding.gameDescription.text = game.gameDescription
-            binding.root.setOnClickListener { listener.onGameClick(game, adapterPosition) }
         }
     }
 }

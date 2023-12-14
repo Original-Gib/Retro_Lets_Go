@@ -1,11 +1,11 @@
 package ie.setu.retro_letsgo.helpers
 
-import android.content.Context
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
+import ie.setu.retro_letsgo.fragments.ArcadeFragment
 import ie.setu.retro_letsgo.R
 
-fun showImagePicker(intentLauncher: ActivityResultLauncher<Intent>, context: Context) {
+fun showImagePicker(intentLauncher: ActivityResultLauncher<Intent>, context: ArcadeFragment) {
     var imagePickerTargetIntent = Intent()
 
     imagePickerTargetIntent.action = Intent.ACTION_OPEN_DOCUMENT
