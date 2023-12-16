@@ -1,5 +1,7 @@
 package ie.setu.retro_letsgo.models
 
+
+
 interface ArcadeStore {
     fun findAll(): List<ArcadeModel>
 

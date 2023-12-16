@@ -24,7 +24,7 @@ class Home : AppCompatActivity() {
         drawerLayout = homeBinding.drawerLayout
 
         val navController = findNavController(R.id.nav_host_fragment)
-        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+       // NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)

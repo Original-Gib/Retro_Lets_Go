@@ -5,9 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
-import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.ActivitySignInBinding
-import ie.setu.retro_letsgo.fragments.ArcadeListFragment
+import ie.setu.retro_letsgo.ui.arcadeList.ArcadeListFragment
 
 class SignInActivity : AppCompatActivity() {
 

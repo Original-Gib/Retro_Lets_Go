@@ -54,7 +54,9 @@
     <string name="nav_header_title">Retro - Let\'s Go</string>
     <string name="nav_header_subtitle">homer@simpson.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="arcadeError">Error : Couldn\'t Add an Arcade...</string>
+    <string name="gameError">Error : Couldn\'t Add a Game...</string>
+    <string name="arcadesNotFound">No Arcades Added Yet...\nGo Find Some Arcades!</string>
 
 </resources>

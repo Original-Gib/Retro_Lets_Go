@@ -2,7 +2,7 @@ package ie.setu.retro_letsgo.helpers
 
 import android.content.Intent
 import androidx.activity.result.ActivityResultLauncher
-import ie.setu.retro_letsgo.fragments.ArcadeFragment
+import ie.setu.retro_letsgo.ui.arcade.ArcadeFragment
 import ie.setu.retro_letsgo.R
 
 fun showImagePicker(intentLauncher: ActivityResultLauncher<Intent>, context: ArcadeFragment) {

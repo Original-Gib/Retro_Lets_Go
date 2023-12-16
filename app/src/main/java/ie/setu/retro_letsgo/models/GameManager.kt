@@ -2,7 +2,7 @@ package ie.setu.retro_letsgo.models
 
 import timber.log.Timber.i
 
-class GamesMemStore: GameStore {
+object GameManager: GameStore {
 
     val games = ArrayList<GameModel>()
     override fun findAll(): List<GameModel> {

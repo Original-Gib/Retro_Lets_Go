@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/arcadeFragment"
-        android:name="ie.setu.retro_letsgo.fragments.ArcadeFragment"
+        android:name="ie.setu.retro_letsgo.ui.arcade.ArcadeFragment"
         android:label="fragment_arcade"
         tools:layout="@layout/fragment_arcade" >
         <action
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/arcadeListFragment"
-        android:name="ie.setu.retro_letsgo.fragments.ArcadeListFragment"
+        android:name="ie.setu.retro_letsgo.ui.arcadeList.ArcadeListFragment"
         android:label="fragment_arcade_list"
         tools:layout="@layout/fragment_arcade_list" >
         <action
@@ -38,10 +38,13 @@
         <action
             android:id="@+id/action_arcadeListFragment_to_gameListFragment"
             app:destination="@id/gameListFragment" />
+        <action
+            android:id="@+id/action_arcadeListFragment_to_arcadeMapFragment"
+            app:destination="@id/arcadeMapFragment" />
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="ie.setu.retro_letsgo.fragments.gameFragment"
+        android:name="ie.setu.retro_letsgo.ui.game.gameFragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game" >
         <action
@@ -56,7 +59,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameListFragment"
-        android:name="ie.setu.retro_letsgo.fragments.GameListFragment"
+        android:name="ie.setu.retro_letsgo.ui.gameList.GameListFragment"
         android:label="fragment_game_list"
         tools:layout="@layout/fragment_game_list" >
         <action
@@ -69,5 +72,10 @@
             android:id="@+id/action_gameListFragment_to_arcadeFragment"
             app:destination="@id/arcadeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/arcadeMapFragment"
+        android:name="ie.setu.retro_letsgo.ArcadeMapFragment"
+        android:label="fragment_arcade_map"
+        tools:layout="@layout/fragment_arcade_map" />
 
 </navigation>
