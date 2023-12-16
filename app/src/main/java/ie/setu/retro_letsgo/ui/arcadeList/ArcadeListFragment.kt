@@ -17,21 +17,24 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.adapters.ArcadeAdapter
+import ie.setu.retro_letsgo.adapters.ArcadeListener
 import ie.setu.retro_letsgo.databinding.FragmentArcadeListBinding
 import ie.setu.retro_letsgo.main.MainApp
 import ie.setu.retro_letsgo.models.ArcadeModel
 
-class ArcadeListFragment : Fragment() {
+class ArcadeListFragment : Fragment(), ArcadeListener {
 
     private var _fragBinding: FragmentArcadeListBinding? = null
     private val fragBinding get() = _fragBinding!!
     lateinit var app: MainApp
     private lateinit var arcadeListViewModel: ArcadeListViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -80,7 +83,7 @@ class ArcadeListFragment : Fragment() {
     }
 
     private fun render(arcadesList: List<ArcadeModel>) {
-        fragBinding.recyclerView.adapter = ArcadeAdapter(arcadesList)
+        fragBinding.recyclerView.adapter = ArcadeAdapter(arcadesList, this)
     }
 
 
@@ -104,6 +107,11 @@ class ArcadeListFragment : Fragment() {
                 arcades ->
             arcades?.let { render(arcades) }
         })
+    }
+
+    override fun onArcadeClick(arcade: ArcadeModel) {
+        val action = ArcadeListFragmentDirections.actionArcadeListFragmentToArcadeDetailsFragment(arcade.id)
+        findNavController().navigate(action)
     }
 
 }

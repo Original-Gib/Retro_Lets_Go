@@ -3,6 +3,7 @@ package ie.setu.retro_letsgo.adapters
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.CardGamesBinding
 import ie.setu.retro_letsgo.models.ArcadeModel
 import ie.setu.retro_letsgo.models.GameModel
@@ -42,8 +43,10 @@ class GameAdapter constructor(private var games: List<GameModel>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(game: GameModel) {
-            binding.gameTitle.text = game.gameTitle
-            binding.gameDescription.text = game.gameDescription
+//            binding.gameTitle.text = game.gameTitle
+//            binding.gameDescription.text = game.gameDescription
+            binding.game = game
+            binding.executePendingBindings()
         }
     }
 }
