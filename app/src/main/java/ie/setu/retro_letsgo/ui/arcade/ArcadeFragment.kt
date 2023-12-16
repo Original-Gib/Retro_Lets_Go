@@ -57,6 +57,7 @@ class ArcadeFragment : Fragment() {
         val root = fragBinding.root
         setupMenu()
 
+
         val toolbar: Toolbar = root.findViewById(R.id.toolbarAdd)
         (activity as AppCompatActivity).setSupportActionBar(toolbar)
         arcadeViewModel = ViewModelProvider(this).get(ArcadeViewModel::class.java)
@@ -74,6 +75,8 @@ class ArcadeFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        arcadeViewModel = ViewModelProvider(this).get(ArcadeViewModel::class.java)
+        arcadeViewModel.observableStatus.observe(viewLifecycleOwner, {status -> status.let { render(status) }})
     }
 
     fun setButtonListener(layout: FragmentArcadeBinding) {
@@ -85,23 +88,21 @@ class ArcadeFragment : Fragment() {
             timber.log.Timber.i("add button pressed")
             var currentUserId = firebaseAuth.currentUser?.uid
             if (currentUserId != null) {
-                arcade.userId = currentUserId
+                val userId = currentUserId
             }
-            arcade.title = fragBinding.arcadeTitle.text.toString()
-            arcade.description = fragBinding.description.text.toString()
-            arcade.phoneNumber = fragBinding.arcadePhoneNumber.text.toString()
-            if (arcade.title.isEmpty()) {
+            val title = fragBinding.arcadeTitle.text.toString()
+            val description = fragBinding.description.text.toString()
+            val phoneNumber = fragBinding.arcadePhoneNumber.text.toString()
+            if (layout.arcadeTitle.text.toString().isEmpty()) {
                 Snackbar
                     .make(it, R.string.enter_arcade_title, Snackbar.LENGTH_LONG)
                     .show()
             } else {
-                    arcadeViewModel.addArcade(arcade)
+                    arcadeViewModel.addArcade(ArcadeModel(title = title, description = description, phoneNumber = phoneNumber ))
                 Snackbar
                     .make(it, R.string.arcade_added, Snackbar.LENGTH_LONG)
                     .show()
             }
-//            setResult(AppCompatActivity.RESULT_OK)
-//            finish()
         }
 
         layout.arcadeLocation.setOnClickListener {
@@ -155,7 +156,7 @@ class ArcadeFragment : Fragment() {
                             arcade.lat = location.lat
                             arcade.lng = location.lng
                             arcade.zoom = location.zoom
-                        } // end of if
+                        }
                     }
                     AppCompatActivity.RESULT_CANCELED -> { } else -> { }
                 }
@@ -165,11 +166,10 @@ class ArcadeFragment : Fragment() {
     private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
-                // Handle for example visibility of menu items
+
             }
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
                 menuInflater.inflate(R.menu.menu_arcade, menu)
             }
 
@@ -186,8 +186,7 @@ class ArcadeFragment : Fragment() {
             true -> {
                 view?.let {
                     //Uncomment this if you want to immediately return to Report
-                    val action = ArcadeFragmentDirections.actionArcadeFragmentToArcadeListFragment()
-                    findNavController().navigate(action)
+                    findNavController().popBackStack(R.id.arcadeListFragment, false)
                 }
             }
             false -> Toast.makeText(context,getString(R.string.arcadeError), Toast.LENGTH_LONG).show()

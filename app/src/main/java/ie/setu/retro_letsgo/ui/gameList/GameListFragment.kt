@@ -62,7 +62,7 @@ class GameListFragment : Fragment() {
 
         val fab: FloatingActionButton = fragBinding.fab
         fab.setOnClickListener {
-            val action = ArcadeListFragmentDirections.actionArcadeListFragmentToArcadeFragment()
+            val action = GameListFragmentDirections.actionGameListFragmentToGameFragment()
             findNavController().navigate(action)
         }
         return root
@@ -71,15 +71,12 @@ class GameListFragment : Fragment() {
     private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
-                // Handle for example visibility of menu items
             }
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
                 menuInflater.inflate(R.menu.menu_game_list, menu)
             }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Validate and handle the selected menu item
                 return NavigationUI.onNavDestinationSelected(menuItem,
                     requireView().findNavController())
             }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
@@ -87,13 +84,6 @@ class GameListFragment : Fragment() {
 
     private fun render(gamesList: List<GameModel>) {
         fragBinding.recyclerView.adapter = GameAdapter(gamesList)
-        if (gamesList.isEmpty()) {
-            fragBinding.recyclerView.visibility = View.GONE
-            // fragBinding.arcadesNotFound.visibility = View.VISIBLE
-        } else {
-            fragBinding.recyclerView.visibility = View.VISIBLE
-            // fragBinding.arcadesNotFound.visibility = View.GONE
-        }
     }
 
     companion object {
@@ -111,7 +101,11 @@ class GameListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        gameListViewModel.load()
+        gameListViewModel = ViewModelProvider(this).get(GameListViewModel::class.java)
+        gameListViewModel.observableGamesList.observe(viewLifecycleOwner, Observer {
+                arcades ->
+            arcades?.let { render(arcades) }
+        })
     }
 
 }

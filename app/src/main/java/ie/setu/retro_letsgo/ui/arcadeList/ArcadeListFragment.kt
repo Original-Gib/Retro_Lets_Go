@@ -66,11 +66,10 @@ class ArcadeListFragment : Fragment() {
     private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
-                // Handle for example visibility of menu items
+
             }
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
                 menuInflater.inflate(R.menu.menu_arcade_list, menu)
             }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
@@ -82,13 +81,6 @@ class ArcadeListFragment : Fragment() {
 
     private fun render(arcadesList: List<ArcadeModel>) {
         fragBinding.recyclerView.adapter = ArcadeAdapter(arcadesList)
-        if (arcadesList.isEmpty()) {
-            fragBinding.recyclerView.visibility = View.GONE
-           // fragBinding.arcadesNotFound.visibility = View.VISIBLE
-        } else {
-            fragBinding.recyclerView.visibility = View.VISIBLE
-           // fragBinding.arcadesNotFound.visibility = View.GONE
-        }
     }
 
 
@@ -107,7 +99,11 @@ class ArcadeListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        arcadeListViewModel.load()
+        arcadeListViewModel = ViewModelProvider(this).get(ArcadeListViewModel::class.java)
+        arcadeListViewModel.observableArcadesList.observe(viewLifecycleOwner, Observer {
+                arcades ->
+            arcades?.let { render(arcades) }
+        })
     }
 
 }

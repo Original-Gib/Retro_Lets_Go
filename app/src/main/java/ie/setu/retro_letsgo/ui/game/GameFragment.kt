@@ -75,6 +75,8 @@ class gameFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
+        gameViewModel.observableStatus.observe(viewLifecycleOwner, {status -> status.let { render(status) }})
     }
 
     fun setButtonListener(layout: FragmentGameBinding) {
@@ -167,16 +169,13 @@ class gameFragment : Fragment() {
     private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
-                // Handle for example visibility of menu items
             }
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                menu.clear()
                 menuInflater.inflate(R.menu.menu_game, menu)
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                // Validate and handle the selected menu item
                 return NavigationUI.onNavDestinationSelected(menuItem,
                     requireView().findNavController())
             }
@@ -188,8 +187,7 @@ class gameFragment : Fragment() {
             true -> {
                 view?.let {
                     //Uncomment this if you want to immediately return to Report
-                    val action = gameFragmentDirections.actionGameFragmentToGameListFragment()
-                    findNavController().navigate(action)
+                    findNavController().popBackStack(R.id.gameListFragment, false)
                 }
             }
             false -> Toast.makeText(context,getString(R.string.gameError), Toast.LENGTH_LONG).show()

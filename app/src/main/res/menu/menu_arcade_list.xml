@@ -9,12 +9,6 @@
         app:showAsAction="always"
         android:iconTint="@color/white"/>
 
-    <item
-        android:id="@+id/arcadeFragment"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/menu_addGame"
-        app:showAsAction="always"
-        android:iconTint="@color/white" />
 
 
 
