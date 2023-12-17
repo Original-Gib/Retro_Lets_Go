@@ -33,7 +33,7 @@ class ArcadeMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener 
         app = application as MainApp
         binding = ActivityArcadeMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
+
         contentBinding = ContentArcadeMapsBinding.bind(binding.root)
         contentBinding.mapView.onCreate(savedInstanceState)
         contentBinding.mapView.getMapAsync {

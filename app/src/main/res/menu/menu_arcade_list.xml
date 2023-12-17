@@ -8,8 +8,4 @@
         android:title="@string/menu_addArcade"
         app:showAsAction="always"
         android:iconTint="@color/white"/>
-
-
-
-
 </menu>

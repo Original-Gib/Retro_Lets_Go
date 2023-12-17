@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/arcadeFragment"
         android:name="ie.setu.retro_letsgo.ui.arcade.ArcadeFragment"
-        android:label="fragment_arcade"
+        android:label="@string/action_arcade"
         tools:layout="@layout/fragment_arcade" >
         <action
             android:id="@+id/action_arcadeFragment_to_arcadeListFragment"
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/arcadeListFragment"
         android:name="ie.setu.retro_letsgo.ui.arcadeList.ArcadeListFragment"
-        android:label="fragment_arcade_list"
+        android:label="@string/action_arcadeList"
         tools:layout="@layout/fragment_arcade_list" >
         <action
             android:id="@+id/action_arcadeListFragment_to_arcadeFragment"
@@ -48,7 +48,7 @@
     <fragment
         android:id="@+id/gameFragment"
         android:name="ie.setu.retro_letsgo.ui.game.gameFragment"
-        android:label="fragment_game"
+        android:label="@string/action_game"
         tools:layout="@layout/fragment_game" >
         <action
             android:id="@+id/action_gameFragment_to_arcadeFragment"
@@ -63,7 +63,7 @@
     <fragment
         android:id="@+id/gameListFragment"
         android:name="ie.setu.retro_letsgo.ui.gameList.GameListFragment"
-        android:label="fragment_game_list"
+        android:label="@string/action_gameList"
         tools:layout="@layout/fragment_game_list" >
         <action
             android:id="@+id/action_gameListFragment_to_arcadeListFragment"
@@ -86,7 +86,7 @@
     <fragment
         android:id="@+id/arcadeDetailsFragment"
         android:name="ie.setu.retro_letsgo.ui.arcadeDetails.ArcadeDetailsFragment"
-        android:label="fragment_arcade_details"
+        android:label="Arcade Details"
         tools:layout="@layout/fragment_arcade_details" >
         <action
             android:id="@+id/action_arcadeDetailsFragment_to_arcadeListFragment"
@@ -101,7 +101,7 @@
     <fragment
         android:id="@+id/gameDetailsFragment"
         android:name="ie.setu.retro_letsgo.ui.gameDetails.GameDetailsFragment"
-        android:label="fragment_game_details"
+        android:label="Game Details"
         tools:layout="@layout/fragment_game_details" >
         <action
             android:id="@+id/action_gameDetailsFragment_to_gameListFragment"

@@ -24,27 +24,15 @@
         android:theme="@style/Theme.RetroLetsGo"
         tools:targetApi="31">
         <activity
-            android:name=".activities.Home"
+            android:name=".ui.home.Home"
             android:exported="true"
-            android:theme="@style/Base.Theme.RetroLetsGo">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:theme="@style/Theme.RetroLetsGo">
         </activity>
         <activity
             android:name=".activities.ArcadeMapsActivity"
             android:exported="false"
             android:label="@string/title_activity_arcade_maps"
             android:theme="@style/Theme.RetroLetsGo" />
-        <activity
-            android:name=".activities.SignInActivity"
-            android:exported="false" />
-        <activity
-            android:name=".activities.SignUpActivity"
-            android:exported="false" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
@@ -53,15 +41,15 @@
             android:name=".activities.MapActivity"
             android:exported="false"
             android:label="@string/title_activity_map" />
-        <activity
-            android:name=".activities.SplashScreenActivity"
-            android:exported="true"
-            android:theme="@style/SplashScreenTheme">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
 
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+        <activity
+            android:name="ie.setu.retro_letsgo.ui.auth.Login"
+            android:exported="true">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
     </application>
 

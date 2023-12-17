@@ -37,7 +37,7 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
+//        setHasOptionsMenu(true)
 
     }
 
@@ -49,8 +49,6 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
         val root = fragBinding.root
         setupMenu()
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        val toolbar: Toolbar = root.findViewById(R.id.toolbar)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
 
         arcadeListViewModel = ViewModelProvider(this).get(ArcadeListViewModel::class.java)
         arcadeListViewModel.observableArcadesList.observe(viewLifecycleOwner, Observer {
@@ -84,6 +82,13 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
 
     private fun render(arcadesList: List<ArcadeModel>) {
         fragBinding.recyclerView.adapter = ArcadeAdapter(arcadesList, this)
+        if (arcadesList.isEmpty()) {
+            fragBinding.recyclerView.visibility = View.GONE
+            fragBinding.arcadesNotFound.visibility = View.VISIBLE
+        } else {
+            fragBinding.recyclerView.visibility = View.VISIBLE
+            fragBinding.arcadesNotFound.visibility = View.GONE
+        }
     }
 
 

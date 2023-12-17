@@ -52,8 +52,6 @@ class GameListFragment : Fragment(), GameListener {
         val root = fragBinding.root
         setupMenu()
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        val toolbar: Toolbar = root.findViewById(R.id.toolbar)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
 
         gameListViewModel = ViewModelProvider(this).get(GameListViewModel::class.java)
         gameListViewModel.observableGamesList.observe(viewLifecycleOwner, Observer {
@@ -85,6 +83,13 @@ class GameListFragment : Fragment(), GameListener {
 
     private fun render(gamesList: List<GameModel>) {
         fragBinding.recyclerView.adapter = GameAdapter(gamesList, this)
+        if (gamesList.isEmpty()) {
+            fragBinding.recyclerView.visibility = View.GONE
+            fragBinding.gamesNotFound.visibility = View.VISIBLE
+        } else {
+            fragBinding.recyclerView.visibility = View.VISIBLE
+            fragBinding.gamesNotFound.visibility = View.GONE
+        }
     }
 
     companion object {

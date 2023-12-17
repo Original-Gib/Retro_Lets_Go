@@ -57,9 +57,6 @@ class ArcadeFragment : Fragment() {
         val root = fragBinding.root
         setupMenu()
 
-
-        val toolbar: Toolbar = root.findViewById(R.id.toolbarAdd)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
         arcadeViewModel = ViewModelProvider(this).get(ArcadeViewModel::class.java)
         arcadeViewModel.observableStatus.observe(viewLifecycleOwner, {status -> status.let { render(status) }})
         registerImagePickerCallback()

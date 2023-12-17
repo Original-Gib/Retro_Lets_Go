@@ -60,8 +60,6 @@ class gameFragment : Fragment() {
         _fragBinding = FragmentGameBinding.inflate(inflater, container,false)
         val root = fragBinding.root
         setupMenu()
-        val toolbar: Toolbar = root.findViewById(R.id.toolbarAdd)
-        (activity as AppCompatActivity).setSupportActionBar(toolbar)
         gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
         gameViewModel.observableStatus.observe(viewLifecycleOwner, {status -> status.let { render(status) }})
         setButtonListener(fragBinding)
