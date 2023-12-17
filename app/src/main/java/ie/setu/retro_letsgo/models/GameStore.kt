@@ -11,4 +11,6 @@ interface GameStore {
     fun delete(game: GameModel)
 
     fun findByUserId(id: String): List<GameModel>
+
+    fun findById(id:Long) : GameModel?
 }

@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.adapters.ArcadeAdapter
 import ie.setu.retro_letsgo.adapters.GameAdapter
+import ie.setu.retro_letsgo.adapters.GameListener
 import ie.setu.retro_letsgo.databinding.FragmentArcadeListBinding
 import ie.setu.retro_letsgo.databinding.FragmentGameListBinding
 import ie.setu.retro_letsgo.main.MainApp
@@ -32,7 +33,7 @@ import ie.setu.retro_letsgo.ui.arcadeList.ArcadeListFragmentDirections
 import ie.setu.retro_letsgo.ui.arcadeList.ArcadeListViewModel
 
 
-class GameListFragment : Fragment() {
+class GameListFragment : Fragment(), GameListener {
 
     private var _fragBinding: FragmentGameListBinding? = null
     private val fragBinding get() = _fragBinding!!
@@ -83,7 +84,7 @@ class GameListFragment : Fragment() {
     }
 
     private fun render(gamesList: List<GameModel>) {
-        fragBinding.recyclerView.adapter = GameAdapter(gamesList)
+        fragBinding.recyclerView.adapter = GameAdapter(gamesList, this)
     }
 
     companion object {
@@ -106,6 +107,11 @@ class GameListFragment : Fragment() {
                 arcades ->
             arcades?.let { render(arcades) }
         })
+    }
+
+    override fun onGameClick(game: GameModel) {
+        val action = GameListFragmentDirections.actionGameListFragmentToGameDetailsFragment(game.id)
+        findNavController().navigate(action)
     }
 
 }

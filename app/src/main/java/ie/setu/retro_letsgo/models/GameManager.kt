@@ -35,4 +35,9 @@ object GameManager: GameStore {
         games.forEach{ i("${it}") }
     }
 
+    override fun findById(id:Long) : GameModel? {
+        val foundGame: GameModel? = games.find { it.id == id }
+        return foundGame
+    }
+
 }

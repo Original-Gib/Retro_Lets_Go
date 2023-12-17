@@ -31,6 +31,11 @@ class GameJSONStore(private val context: Context) : GameStore {
         return games
     }
 
+    override fun findById(id: Long): GameModel? {
+        return games.find { it.id == id }
+    }
+
+
     //creates a new game
     override fun create(game: GameModel) {
         game.id = generateRandomId()
