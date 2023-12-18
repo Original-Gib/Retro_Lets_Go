@@ -1,10 +1,15 @@
 package ie.setu.retro_letsgo.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,6 +18,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.R
@@ -21,6 +27,7 @@ import ie.setu.retro_letsgo.databinding.NavHeaderBinding
 import ie.setu.retro_letsgo.helpers.customTransformation
 import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 import ie.setu.retro_letsgo.ui.auth.Login
+import timber.log.Timber
 
 class Home : AppCompatActivity() {
 
@@ -29,6 +36,7 @@ class Home : AppCompatActivity() {
     private lateinit var navHeaderBinding : NavHeaderBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loggedInViewModel : LoggedInViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,7 +55,19 @@ class Home : AppCompatActivity() {
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
 
+        val nightModeSwitchItem = navView.menu.findItem(R.id.night_mode)
 
+        nightModeSwitchItem.setOnMenuItemClickListener {
+            val mode: Int
+             if (nightModeSwitchItem.isChecked) {
+                mode = AppCompatDelegate.MODE_NIGHT_YES // Switch to day mode
+            } else {
+               mode = AppCompatDelegate.MODE_NIGHT_NO // Switch to night mode
+            }
+            AppCompatDelegate.setDefaultNightMode(mode)
+            nightModeSwitchItem.isChecked = !nightModeSwitchItem.isChecked
+            true
+        }
     }
 
     public override fun onStart() {
