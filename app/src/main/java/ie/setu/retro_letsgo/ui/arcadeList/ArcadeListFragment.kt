@@ -8,6 +8,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
@@ -95,6 +96,16 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
 
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_arcade_list, menu)
+
+                val item = menu.findItem(R.id.toggleArcades) as MenuItem
+                item.setActionView(R.layout.togglebutton_layout)
+                val toggleArcades: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleArcades.isChecked = false
+
+                toggleArcades.setOnCheckedChangeListener { _, isChecked ->
+                    if (isChecked) arcadeListViewModel.loadAll()
+                    else arcadeListViewModel.load()
+                }
             }
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Validate and handle the selected menu item
@@ -104,7 +115,7 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
     }
 
     private fun render(arcadesList: List<ArcadeModel>) {
-        fragBinding.recyclerView.adapter = ArcadeAdapter(arcadesList, this)
+        fragBinding.recyclerView.adapter = ArcadeAdapter(arcadesList, this, arcadeListViewModel.readOnly.value!!)
         if (arcadesList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
             fragBinding.arcadesNotFound.visibility = View.VISIBLE
@@ -140,7 +151,8 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
 
     override fun onArcadeClick(arcade: ArcadeModel) {
         val action = ArcadeListFragmentDirections.actionArcadeListFragmentToArcadeDetailsFragment(arcade.uid)
-        findNavController().navigate(action)
+        if(!arcadeListViewModel.readOnly.value!!)
+            findNavController().navigate(action)
     }
 
 }

@@ -11,12 +11,12 @@ interface ArcadeListener {
     fun onArcadeClick(arcade: ArcadeModel)
 }
 
-class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private val listener: ArcadeListener) : RecyclerView.Adapter<ArcadeAdapter.MainHolder>() {
+class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private val listener: ArcadeListener, private val readOnly: Boolean) : RecyclerView.Adapter<ArcadeAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardArcadeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return MainHolder(binding)
+        return MainHolder(binding, readOnly)
     }
 
     override fun onBindViewHolder(holder: MainHolder, position: Int) {
@@ -38,9 +38,10 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
         }
     }
 
-    class MainHolder(private val binding: CardArcadeBinding) :
+   inner class MainHolder(private val binding: CardArcadeBinding, private val readOnly: Boolean) :
         RecyclerView.ViewHolder(binding.root) {
 
+       val readOnlyRow = readOnly
         fun bind(arcade: ArcadeModel, listener: ArcadeListener) {
 //            binding.arcadeTitle.text = arcade.title
 //            binding.arcadeDescription.text = arcade.description

@@ -14,7 +14,25 @@ import timber.log.Timber
 object FirebaseDBManager : ArcadeStore {
         var database: DatabaseReference = FirebaseDatabase.getInstance("https://retro---let-s-go-default-rtdb.europe-west1.firebasedatabase.app").reference
     override fun findAll(arcadesList: MutableLiveData<List<ArcadeModel>>) {
-        TODO("Not yet implemented")
+        database.child("arcades")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    Timber.i("Firebase Donation error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val localList = ArrayList<ArcadeModel>()
+                    val children = snapshot.children
+                    children.forEach {
+                        val arcade = it.getValue(ArcadeModel::class.java)
+                        localList.add(arcade!!)
+                    }
+                    database.child("arcades")
+                        .removeEventListener(this)
+
+                    arcadesList.value = localList
+                }
+            })
     }
 
     override fun findAll(userid: String, arcadesList: MutableLiveData<List<ArcadeModel>>) {

@@ -13,6 +13,7 @@ class ArcadeListViewModel: ViewModel() {
 
     private val arcadesList = MutableLiveData<List<ArcadeModel>>()
     var liveFirebaseUser = MutableLiveData<FirebaseUser>()
+    var readOnly = MutableLiveData(false)
 
     val observableArcadesList: LiveData<List<ArcadeModel>>
         get() = arcadesList
@@ -23,6 +24,7 @@ class ArcadeListViewModel: ViewModel() {
 
     fun load() {
 //        arcadesList.value = ArcadeManager.findAll()
+        readOnly.value = false
         try {
             FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,arcadesList)
             Timber.i("Report Load Success : ${arcadesList.value.toString()}")
@@ -39,6 +41,17 @@ class ArcadeListViewModel: ViewModel() {
         }
         catch (e: Exception) {
             Timber.i("Arcade Delete Error : $e.message")
+        }
+    }
+
+    fun loadAll() {
+        try {
+            readOnly.value = true
+            FirebaseDBManager.findAll(arcadesList)
+            Timber.i("Report LoadAll Success : ${arcadesList.value.toString()}")
+        }
+        catch (e: Exception) {
+            Timber.i("Report LoadAll Error : $e.message")
         }
     }
 }
