@@ -14,9 +14,11 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseUser
+import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.HomeBinding
 import ie.setu.retro_letsgo.databinding.NavHeaderBinding
+import ie.setu.retro_letsgo.helpers.customTransformation
 import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 import ie.setu.retro_letsgo.ui.auth.Login
 
@@ -45,6 +47,7 @@ class Home : AppCompatActivity() {
         val navView = homeBinding.navView
         navView.setupWithNavController(navController)
 
+
     }
 
     public override fun onStart() {
@@ -67,6 +70,15 @@ class Home : AppCompatActivity() {
         var headerView = homeBinding.navView.getHeaderView(0)
         navHeaderBinding = NavHeaderBinding.bind(headerView)
         navHeaderBinding.navHeaderEmail.text = currentUser.email
+
+        if(currentUser.photoUrl != null && currentUser.displayName != null) {
+            navHeaderBinding.navHeaderName.text = currentUser.displayName
+            Picasso.get().load(currentUser.photoUrl)
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .into(navHeaderBinding.navHeaderImage)
+        }
     }
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
