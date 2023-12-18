@@ -12,6 +12,10 @@
             android:id="@+id/gameListFragment"
             android:icon="@drawable/baseline_videogame_asset_24"
             android:title="@string/action_gameList" />
+        <item
+            android:id="@+id/mapsFragment"
+            android:icon="@drawable/baseline_map_24"
+            android:title="@string/action_map" />
     </group>
     <item android:title="@string/group_communicate">
         <menu>

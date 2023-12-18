@@ -46,6 +46,7 @@
     <string name="action_arcadeList">Arcades</string>
     <string name="action_game">Add a Game</string>
     <string name="action_gameList">Your Games</string>
+    <string name="action_map">Arcade Locations</string>
 
     <string name="action_share">Share</string>
     <string name="action_send">Send</string>

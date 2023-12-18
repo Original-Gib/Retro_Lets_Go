@@ -69,6 +69,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.3")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
     implementation("com.makeramen:roundedimageview:2.3.0")
+    implementation("com.google.android.gms:play-services-location:21.0.1")
 
 
 }

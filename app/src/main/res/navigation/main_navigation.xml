@@ -113,5 +113,14 @@
             android:name="id"
             app:argType="long" />
     </fragment>
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="ie.setu.retro_letsgo.ui.map.MapsFragment"
+        android:label="Arcade Map"
+        tools:layout="@layout/fragment_maps" >
+        <action
+            android:id="@+id/action_mapsFragment_to_arcadeDetailsFragment"
+            app:destination="@id/arcadeDetailsFragment" />
+    </fragment>
 
 </navigation>

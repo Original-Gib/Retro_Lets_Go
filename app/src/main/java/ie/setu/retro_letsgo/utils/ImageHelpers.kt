@@ -1,4 +1,4 @@
-package ie.setu.retro_letsgo.helpers
+package ie.setu.retro_letsgo.utils
 
 import android.app.Activity
 import android.app.AlertDialog

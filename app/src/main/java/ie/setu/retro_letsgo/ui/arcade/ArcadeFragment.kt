@@ -13,28 +13,23 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.activities.MapActivity
 import ie.setu.retro_letsgo.databinding.FragmentArcadeBinding
-import ie.setu.retro_letsgo.helpers.showImagePicker
-import ie.setu.retro_letsgo.main.MainApp
+import ie.setu.retro_letsgo.utils.showImagePicker
 import ie.setu.retro_letsgo.models.ArcadeModel
 import ie.setu.retro_letsgo.models.Location
 import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
-import ie.setu.retro_letsgo.ui.game.gameFragmentDirections
+import ie.setu.retro_letsgo.ui.map.MapsViewModel
 
 
 class ArcadeFragment : Fragment() {
@@ -83,22 +78,16 @@ class ArcadeFragment : Fragment() {
         }
 
         layout.btnAdd.setOnClickListener {
-            timber.log.Timber.i("add button pressed")
             if (layout.arcadeTitle.text.toString().isEmpty()) {
-                Snackbar
-                    .make(it, R.string.enter_arcade_title, Snackbar.LENGTH_LONG)
-                    .show()
+                Snackbar.make(it, R.string.enter_arcade_title, Snackbar.LENGTH_LONG).show()
             } else {
-                timber.log.Timber.i("hello")
-                arcadeViewModel.addArcade(loggedInViewModel.liveFirebaseUser,
-                    ArcadeModel( uid = loggedInViewModel.liveFirebaseUser.value?.uid!!,
-                        title = fragBinding.arcadeTitle.text.toString() ,
-                        description = fragBinding.description.text.toString(),
-                        phoneNumber = fragBinding.arcadePhoneNumber.text.toString(),
-                        email = loggedInViewModel.liveFirebaseUser.value?.email!!))
-                Snackbar
-                    .make(it, R.string.arcade_added, Snackbar.LENGTH_LONG)
-                    .show()
+                arcade.title = fragBinding.arcadeTitle.text.toString()
+                arcade.description = fragBinding.description.text.toString()
+                arcade.phoneNumber = fragBinding.arcadePhoneNumber.text.toString()
+                arcade.email = loggedInViewModel.liveFirebaseUser.value?.email!!
+
+                arcadeViewModel.addArcade(loggedInViewModel.liveFirebaseUser, arcade)
+                Snackbar.make(it, R.string.arcade_added, Snackbar.LENGTH_LONG).show()
             }
         }
 

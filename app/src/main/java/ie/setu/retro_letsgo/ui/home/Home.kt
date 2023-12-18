@@ -2,14 +2,13 @@ package ie.setu.retro_letsgo.ui.home
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.location.Location
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Switch
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,15 +17,17 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.HomeBinding
 import ie.setu.retro_letsgo.databinding.NavHeaderBinding
-import ie.setu.retro_letsgo.helpers.customTransformation
+import ie.setu.retro_letsgo.utils.customTransformation
 import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 import ie.setu.retro_letsgo.ui.auth.Login
+import ie.setu.retro_letsgo.ui.map.MapsViewModel
+import ie.setu.retro_letsgo.utils.checkLocationPermissions
+import ie.setu.retro_letsgo.utils.isPermissionGranted
 import timber.log.Timber
 
 class Home : AppCompatActivity() {
@@ -36,6 +37,7 @@ class Home : AppCompatActivity() {
     private lateinit var navHeaderBinding : NavHeaderBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loggedInViewModel : LoggedInViewModel
+    private val mapsViewModel : MapsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +51,7 @@ class Home : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment)
 
         appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.arcadeFragment, R.id.arcadeListFragment, R.id.gameFragment, R.id.gameListFragment), drawerLayout)
+            R.id.arcadeFragment, R.id.arcadeListFragment, R.id.gameFragment, R.id.gameListFragment, R.id.mapsFragment), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         val navView = homeBinding.navView
@@ -67,6 +69,10 @@ class Home : AppCompatActivity() {
             AppCompatDelegate.setDefaultNightMode(mode)
             nightModeSwitchItem.isChecked = !nightModeSwitchItem.isChecked
             true
+        }
+
+        if(checkLocationPermissions(this)) {
+            mapsViewModel.updateCurrentLocation()
         }
     }
 
@@ -111,5 +117,20 @@ class Home : AppCompatActivity() {
         val intent = Intent(this, Login::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (isPermissionGranted(requestCode, grantResults))
+            mapsViewModel.updateCurrentLocation()
+        else {
+            // permissions denied, so use a default location
+            mapsViewModel.currentLocation.value = Location("Default").apply {
+                latitude = 52.245696
+                longitude = -7.139102
+            }
+        }
+        Timber.i("LOC : %s", mapsViewModel.currentLocation.value)
     }
 }
