@@ -25,6 +25,7 @@
     <string name="signIn_signUp_redirect">Not yet registered? Sign up here</string>
     <string name="title_activity_arcade_maps">Map of All Arcades</string>
     <string name="arcade_added">Arcade Added!</string>
+    <string name="arcade_saved">Arcade Saved!</string>
     <string name="game_added">Game Added!</string>
 
     <!-- Strings used for fragments for navigation -->
