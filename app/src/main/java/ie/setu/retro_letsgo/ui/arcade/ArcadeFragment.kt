@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -32,6 +33,7 @@ import ie.setu.retro_letsgo.helpers.showImagePicker
 import ie.setu.retro_letsgo.main.MainApp
 import ie.setu.retro_letsgo.models.ArcadeModel
 import ie.setu.retro_letsgo.models.Location
+import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 import ie.setu.retro_letsgo.ui.game.gameFragmentDirections
 
 
@@ -43,10 +45,9 @@ class ArcadeFragment : Fragment() {
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var arcade = ArcadeModel()
     private lateinit var arcadeViewModel: ArcadeViewModel
-    lateinit var firebaseAuth: FirebaseAuth
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        firebaseAuth = FirebaseAuth.getInstance()
     }
 
     override fun onCreateView(
@@ -83,19 +84,18 @@ class ArcadeFragment : Fragment() {
 
         layout.btnAdd.setOnClickListener {
             timber.log.Timber.i("add button pressed")
-            var currentUserId = firebaseAuth.currentUser?.uid
-            if (currentUserId != null) {
-                val userId = currentUserId
-            }
-            val title = fragBinding.arcadeTitle.text.toString()
-            val description = fragBinding.description.text.toString()
-            val phoneNumber = fragBinding.arcadePhoneNumber.text.toString()
             if (layout.arcadeTitle.text.toString().isEmpty()) {
                 Snackbar
                     .make(it, R.string.enter_arcade_title, Snackbar.LENGTH_LONG)
                     .show()
             } else {
-                    arcadeViewModel.addArcade(ArcadeModel(title = title, description = description, phoneNumber = phoneNumber ))
+                timber.log.Timber.i("hello")
+                arcadeViewModel.addArcade(loggedInViewModel.liveFirebaseUser,
+                    ArcadeModel( uid = loggedInViewModel.liveFirebaseUser.value?.uid!!,
+                        title = fragBinding.arcadeTitle.text.toString() ,
+                        description = fragBinding.description.text.toString(),
+                        phoneNumber = fragBinding.arcadePhoneNumber.text.toString(),
+                        email = loggedInViewModel.liveFirebaseUser.value?.email!!))
                 Snackbar
                     .make(it, R.string.arcade_added, Snackbar.LENGTH_LONG)
                     .show()
@@ -127,11 +127,11 @@ class ArcadeFragment : Fragment() {
                             val image = result.data!!.data!!
                             requireContext().contentResolver.takePersistableUriPermission(image,
                                 Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                            arcade.image = image
-
-                            Picasso.get()
-                                .load(arcade.image)
-                                .into(fragBinding.arcadeImage)
+//                            arcade.image = image
+//
+//                            Picasso.get()
+//                                .load(arcade.image)
+//                                .into(fragBinding.arcadeImage)
                             fragBinding.chooseImage.setText(R.string.change_arcade_image)
                         } // end of if
                     }

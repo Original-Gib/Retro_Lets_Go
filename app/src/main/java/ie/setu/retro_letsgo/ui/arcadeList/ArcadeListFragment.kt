@@ -8,18 +8,18 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.NavigationUI
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.adapters.ArcadeAdapter
@@ -27,6 +27,9 @@ import ie.setu.retro_letsgo.adapters.ArcadeListener
 import ie.setu.retro_letsgo.databinding.FragmentArcadeListBinding
 import ie.setu.retro_letsgo.main.MainApp
 import ie.setu.retro_letsgo.models.ArcadeModel
+import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
+import ie.setu.retro_letsgo.utils.SwipeToDeleteCallback
+import ie.setu.retro_letsgo.utils.SwipeToEditCallback
 
 class ArcadeListFragment : Fragment(), ArcadeListener {
 
@@ -34,6 +37,7 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
     private val fragBinding get() = _fragBinding!!
     lateinit var app: MainApp
     private lateinit var arcadeListViewModel: ArcadeListViewModel
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,8 +55,7 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
         fragBinding.recyclerView.layoutManager = LinearLayoutManager(activity)
 
         arcadeListViewModel = ViewModelProvider(this).get(ArcadeListViewModel::class.java)
-        arcadeListViewModel.observableArcadesList.observe(viewLifecycleOwner, Observer {
-                arcades ->
+        arcadeListViewModel.observableArcadesList.observe(viewLifecycleOwner, Observer { arcades ->
             arcades?.let { render(arcades) }
         })
 
@@ -61,6 +64,26 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
             val action = ArcadeListFragmentDirections.actionArcadeListFragmentToArcadeFragment()
             findNavController().navigate(action)
         }
+
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = fragBinding.recyclerView.adapter as ArcadeAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+                arcadeListViewModel.delete(arcadeListViewModel.liveFirebaseUser.value?.uid!!,
+                    (viewHolder.itemView.tag as ArcadeModel).uid)
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragBinding.recyclerView)
+
+        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onArcadeClick(viewHolder.itemView.tag as ArcadeModel)
+            }
+        }
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchEditHelper.attachToRecyclerView(fragBinding.recyclerView)
+
         return root
     }
 
@@ -107,15 +130,16 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
 
     override fun onResume() {
         super.onResume()
-        arcadeListViewModel = ViewModelProvider(this).get(ArcadeListViewModel::class.java)
-        arcadeListViewModel.observableArcadesList.observe(viewLifecycleOwner, Observer {
-                arcades ->
-            arcades?.let { render(arcades) }
+        loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
+            if (firebaseUser != null) {
+                arcadeListViewModel.liveFirebaseUser.value = firebaseUser
+                arcadeListViewModel.load()
+            }
         })
     }
 
     override fun onArcadeClick(arcade: ArcadeModel) {
-        val action = ArcadeListFragmentDirections.actionArcadeListFragmentToArcadeDetailsFragment(arcade.id)
+        val action = ArcadeListFragmentDirections.actionArcadeListFragmentToArcadeDetailsFragment(arcade.uid)
         findNavController().navigate(action)
     }
 

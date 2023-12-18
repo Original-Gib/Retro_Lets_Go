@@ -2,10 +2,10 @@ package ie.setu.retro_letsgo.models
 
 import android.content.Context
 import android.net.Uri
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseUser
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import ie.setu.retro_letsgo.helpers.*
-import timber.log.Timber
 import java.lang.reflect.Type
 import java.util.*
 
@@ -22,75 +22,34 @@ fun generateRandomId(): Long {
 class ArcadeJSONStore(private val context: Context) : ArcadeStore {
 
     var arcades = mutableListOf<ArcadeModel>()
-
-    init {
-        if (exists(context, JSON_FILE)) {
-            deserialize()
-        }
+    override fun findAll(arcadesList: MutableLiveData<List<ArcadeModel>>) {
+        TODO("Not yet implemented")
     }
 
-    //finds all arcades
-    override fun findAll(): MutableList<ArcadeModel> {
-        logAll()
-        return arcades
+    override fun findAll(userid: String, arcadesList: MutableLiveData<List<ArcadeModel>>) {
+        TODO("Not yet implemented")
     }
 
-    //finds arcade by userID
-    override fun findByUserId(userId: String): List<ArcadeModel> {
-        return arcades.filter { it.userId == userId }
+    override fun findById(
+        userid: String,
+        arcadeid: String,
+        donation: MutableLiveData<ArcadeModel>
+    ) {
+        TODO("Not yet implemented")
     }
 
-    //Finds arcade by ID
-    override fun findById(id: Long): ArcadeModel? {
-        return arcades.find { it.id == id }
+    override fun create(firebaseUser: MutableLiveData<FirebaseUser>, donation: ArcadeModel) {
+        TODO("Not yet implemented")
     }
 
-    //creates a new arcade
-    override fun create(arcade: ArcadeModel) {
-        arcade.id = generateRandomId()
-        arcades.add(arcade)
-        serialize()
+    override fun delete(userid: String, arcadeid: String) {
+        TODO("Not yet implemented")
     }
 
-    //updates an existing arcade
-    override fun update(arcade: ArcadeModel) {
-        val arcadesList = findAll() as ArrayList<ArcadeModel>
-        var foundArcade: ArcadeModel? = arcadesList.find { p -> p.id == arcade.id }
-        if (foundArcade != null) {
-            foundArcade.title = arcade.title
-            foundArcade.description = arcade.description
-            foundArcade.phoneNumber = arcade.phoneNumber
-            foundArcade.image = arcade.image
-            foundArcade.lat = arcade.lat
-            foundArcade.lng = arcade.lng
-            foundArcade.zoom = arcade.zoom
-        }
-        serialize()
+    override fun update(userid: String, arcadeid: String, arcade: ArcadeModel) {
+        TODO("Not yet implemented")
     }
 
-    //deletes and arcade
-    override fun delete(arcade: ArcadeModel) {
-        arcades.remove(arcade)
-        serialize()
-    }
-
-
-    //serialises the data to json formate
-    private fun serialize() {
-        val jsonString = gsonBuilder.toJson(arcades, listType)
-        write(context, JSON_FILE, jsonString)
-    }
-
-    //reads the data from a json file
-    private fun deserialize() {
-        val jsonString = read(context, JSON_FILE)
-        arcades = gsonBuilder.fromJson(jsonString, listType)
-    }
-
-    //logs each of the arcades
-    private fun logAll() {
-        arcades.forEach { Timber.i("$it") }
-    }
 }
 
 class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {

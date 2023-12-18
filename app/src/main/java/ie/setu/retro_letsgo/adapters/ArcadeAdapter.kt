@@ -31,7 +31,7 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
         notifyDataSetChanged() // Notify the adapter that the dataset has changed
     }
 
-    fun removeItem(position: Int) {
+    fun removeAt(position: Int) {
         if (position in 0 until arcades.size) {
             arcades = arcades.toMutableList().apply { removeAt(position) }
             notifyItemRemoved(position)
@@ -46,7 +46,8 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
 //            binding.arcadeDescription.text = arcade.description
 
             binding.arcade = arcade
-            Picasso.get().load(arcade.image).resize(200,200).into(binding.imageIcon)
+            binding.root.tag = arcade
+//            Picasso.get().load(arcade.image).resize(200,200).into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onArcadeClick(arcade) }
             binding.executePendingBindings()
         }

@@ -72,21 +72,21 @@ class ArcadeMapsActivity : AppCompatActivity(), GoogleMap.OnMarkerClickListener 
         map.setOnMarkerClickListener(this)
         val loggedInUser = firebaseAuth.currentUser?.uid
         if (!loggedInUser.isNullOrEmpty()) {
-            app.arcades.findByUserId(loggedInUser).forEach {
-                val loc = LatLng(it.lat, it.lng)
-                val options = MarkerOptions().title(it.title).position(loc)
-                map.addMarker(options)?.tag = it.id
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
+//            app.arcades.findByUserId(loggedInUser).forEach {
+//                val loc = LatLng(it.lat, it.lng)
+//                val options = MarkerOptions().title(it.title).position(loc)
+//                map.addMarker(options)?.tag = it.id
+//                map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, it.zoom))
             }
         }
-    }
+
 
     override fun onMarkerClick(marker: Marker): Boolean {
-        val tag = marker.tag as Long
-        val arcade = app.arcades.findById(tag)
-        contentBinding.currentTitle.text = arcade!!.title
-        contentBinding.currentDescription.text = arcade.description
-        Picasso.get().load(arcade.image).into(contentBinding.currentImage)
+//        val tag = marker.tag as Long
+//        val arcade = app.arcades.findById(tag)
+//        contentBinding.currentTitle.text = arcade!!.title
+//        contentBinding.currentDescription.text = arcade.description
+//        Picasso.get().load(arcade.image).into(contentBinding.currentImage)
         return false
     }
 }

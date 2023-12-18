@@ -1,17 +1,19 @@
 package ie.setu.retro_letsgo.models
 
+import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseUser
 
 
 interface ArcadeStore {
-    fun findAll(): List<ArcadeModel>
-
-    fun create(arcade: ArcadeModel)
-
-    fun update(arcade: ArcadeModel)
-
-    fun delete(arcade: ArcadeModel)
-
-    fun findByUserId(id: String): List<ArcadeModel>
-
-    fun findById(id:Long) : ArcadeModel?
+    fun findAll(arcadesList:
+                MutableLiveData<List<ArcadeModel>>
+    )
+    fun findAll(userid:String,
+                arcadesList:
+                MutableLiveData<List<ArcadeModel>>)
+    fun findById(userid:String, arcadeid: String,
+                 donation: MutableLiveData<ArcadeModel>)
+    fun create(firebaseUser: MutableLiveData<FirebaseUser>, arcade: ArcadeModel)
+    fun delete(userid:String, arcadeid: String)
+    fun update(userid:String, arcadeid: String, arcade: ArcadeModel)
 }

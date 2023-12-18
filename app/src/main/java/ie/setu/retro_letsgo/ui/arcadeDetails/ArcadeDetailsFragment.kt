@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import ie.setu.retro_letsgo.R
@@ -17,6 +19,7 @@ import ie.setu.retro_letsgo.databinding.FragmentArcadeBinding
 import ie.setu.retro_letsgo.databinding.FragmentArcadeDetailsBinding
 import ie.setu.retro_letsgo.helpers.showImagePicker
 import ie.setu.retro_letsgo.models.ArcadeModel
+import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 
 class ArcadeDetailsFragment : Fragment() {
     private val args by navArgs<ArcadeDetailsFragmentArgs>()
@@ -26,6 +29,7 @@ class ArcadeDetailsFragment : Fragment() {
     private lateinit var viewModel: ArcadeDetailsViewModel
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
+    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +41,13 @@ class ArcadeDetailsFragment : Fragment() {
 
         viewModel = ViewModelProvider(this).get(ArcadeDetailsViewModel::class.java)
         viewModel.observableArcade.observe(viewLifecycleOwner, Observer { render() })
+
+        fragBinding.btnEdit.setOnClickListener {
+            viewModel.updateArcade(loggedInViewModel.liveFirebaseUser.value?.uid!!,
+                args.id, fragBinding.arcadevm?.observableArcade!!.value!!)
+            findNavController().navigateUp()
+        }
+
         return root
     }
 
@@ -48,7 +59,9 @@ class ArcadeDetailsFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getArcade(args.id)
+        viewModel.getArcade(loggedInViewModel.liveFirebaseUser.value?.uid!!,
+            args.id)
+
     }
 
     override fun onDestroyView() {
