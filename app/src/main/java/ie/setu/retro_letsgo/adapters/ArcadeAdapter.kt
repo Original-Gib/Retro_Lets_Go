@@ -2,10 +2,12 @@ package ie.setu.retro_letsgo.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.databinding.CardArcadeBinding
 import ie.setu.retro_letsgo.models.ArcadeModel
+import ie.setu.retro_letsgo.utils.customTransformation
 
 interface ArcadeListener {
     fun onArcadeClick(arcade: ArcadeModel)
@@ -48,7 +50,11 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
 
             binding.arcade = arcade
             binding.root.tag = arcade
-//            Picasso.get().load(arcade.image).resize(200,200).into(binding.imageIcon)
+            Picasso.get().load(arcade.image.toUri())
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .into(binding.imageIcon)
             binding.root.setOnClickListener { listener.onArcadeClick(arcade) }
             binding.executePendingBindings()
         }

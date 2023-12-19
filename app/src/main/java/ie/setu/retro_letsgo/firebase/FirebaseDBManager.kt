@@ -17,7 +17,7 @@ object FirebaseDBManager : ArcadeStore {
         database.child("arcades")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
-                    Timber.i("Firebase Donation error : ${error.message}")
+                    Timber.i("Firebase Arcade error : ${error.message}")
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {
@@ -39,7 +39,7 @@ object FirebaseDBManager : ArcadeStore {
         database.child("user-arcades").child(userid)
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
-                    Timber.i("Firebase Donation error : ${error.message}")
+                    Timber.i("Firebase Arcade error : ${error.message}")
                 }
 
                 override fun onDataChange(snapshot: DataSnapshot) {

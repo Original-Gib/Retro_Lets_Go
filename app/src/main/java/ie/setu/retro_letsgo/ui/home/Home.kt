@@ -3,8 +3,10 @@ package ie.setu.retro_letsgo.ui.home
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -22,6 +24,7 @@ import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.HomeBinding
 import ie.setu.retro_letsgo.databinding.NavHeaderBinding
+import ie.setu.retro_letsgo.firebase.FirebaseImageManager
 import ie.setu.retro_letsgo.utils.customTransformation
 import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 import ie.setu.retro_letsgo.ui.auth.Login
@@ -29,6 +32,7 @@ import ie.setu.retro_letsgo.ui.map.MapsViewModel
 import ie.setu.retro_letsgo.utils.checkLocationPermissions
 import ie.setu.retro_letsgo.utils.isPermissionGranted
 import timber.log.Timber
+
 
 class Home : AppCompatActivity() {
 
@@ -38,6 +42,7 @@ class Home : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loggedInViewModel : LoggedInViewModel
     private val mapsViewModel : MapsViewModel by viewModels()
+    private lateinit var headerView : View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +79,8 @@ class Home : AppCompatActivity() {
         if(checkLocationPermissions(this)) {
             mapsViewModel.updateCurrentLocation()
         }
+
+        initNavHeader()
     }
 
     public override fun onStart() {
@@ -81,7 +88,7 @@ class Home : AppCompatActivity() {
         loggedInViewModel = ViewModelProvider(this).get(LoggedInViewModel::class.java)
         loggedInViewModel.liveFirebaseUser.observe(this, Observer { firebaseUser ->
             if (firebaseUser != null)
-                updateNavHeader(loggedInViewModel.liveFirebaseUser.value!!)
+                updateNavHeader(firebaseUser)
         })
 
         loggedInViewModel.loggedOut.observe(this, Observer { loggedout ->
@@ -93,18 +100,36 @@ class Home : AppCompatActivity() {
     }
 
     private fun updateNavHeader(currentUser: FirebaseUser) {
-        var headerView = homeBinding.navView.getHeaderView(0)
-        navHeaderBinding = NavHeaderBinding.bind(headerView)
+        FirebaseImageManager.imageUri.observe(this) { result ->
+            if (result == Uri.EMPTY) {
+                Timber.i("App NO Existing imageUri")
+                if (currentUser.photoUrl != null) {
+                    //if you're a google user
+                    FirebaseImageManager.updateUserImage(
+                        currentUser.uid,
+                        currentUser.photoUrl,
+                        navHeaderBinding.navHeaderImage,
+                        false
+                    )
+                } else {
+                    Timber.i("App Loading Existing Default imageUri")
+                    FirebaseImageManager.updateDefaultImage(
+                        currentUser.uid,
+                        R.drawable.pacghost,
+                        navHeaderBinding.navHeaderImage
+                    )
+                }        } else // load existing image from firebase
+            {
+                Timber.i("App Loading Existing imageUri")
+                FirebaseImageManager.updateUserImage(
+                    currentUser.uid,
+                    FirebaseImageManager.imageUri.value,
+                    navHeaderBinding.navHeaderImage, false
+                )
+            }    }
         navHeaderBinding.navHeaderEmail.text = currentUser.email
-
-        if(currentUser.photoUrl != null && currentUser.displayName != null) {
+        if(currentUser.displayName != null)
             navHeaderBinding.navHeaderName.text = currentUser.displayName
-            Picasso.get().load(currentUser.photoUrl)
-                .resize(200, 200)
-                .transform(customTransformation())
-                .centerCrop()
-                .into(navHeaderBinding.navHeaderImage)
-        }
     }
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
@@ -132,5 +157,11 @@ class Home : AppCompatActivity() {
             }
         }
         Timber.i("LOC : %s", mapsViewModel.currentLocation.value)
+    }
+
+    private fun initNavHeader() {
+        Timber.i("App Init Nav Header")
+        headerView = homeBinding.navView.getHeaderView(0)
+        navHeaderBinding = NavHeaderBinding.bind(headerView)
     }
 }

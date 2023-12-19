@@ -1,5 +1,7 @@
 package ie.setu.retro_letsgo.ui.arcade
 
+import android.app.Activity.RESULT_CANCELED
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -22,14 +24,18 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
+import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.activities.MapActivity
 import ie.setu.retro_letsgo.databinding.FragmentArcadeBinding
+import ie.setu.retro_letsgo.firebase.FirebaseImageManager
 import ie.setu.retro_letsgo.utils.showImagePicker
 import ie.setu.retro_letsgo.models.ArcadeModel
 import ie.setu.retro_letsgo.models.Location
 import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 import ie.setu.retro_letsgo.ui.map.MapsViewModel
+import ie.setu.retro_letsgo.utils.readImageUri
+import timber.log.Timber
 
 
 class ArcadeFragment : Fragment() {
@@ -37,6 +43,7 @@ class ArcadeFragment : Fragment() {
     private var _fragBinding: FragmentArcadeBinding? = null
     private val fragBinding get() = _fragBinding!!
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
+    private lateinit var intentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     var arcade = ArcadeModel()
     private lateinit var arcadeViewModel: ArcadeViewModel
@@ -74,7 +81,7 @@ class ArcadeFragment : Fragment() {
 
     fun setButtonListener(layout: FragmentArcadeBinding) {
         layout.chooseImage.setOnClickListener {
-            showImagePicker(imageIntentLauncher, this)
+            showImagePicker(intentLauncher, this)
         }
 
         layout.btnAdd.setOnClickListener {
@@ -105,28 +112,22 @@ class ArcadeFragment : Fragment() {
     }
 
     private fun registerImagePickerCallback() {
-        imageIntentLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
-            { result ->
-                when(result.resultCode){
-                    AppCompatActivity.RESULT_OK -> {
-                        if (result.data != null) {
-                            timber.log.Timber.i("Got Result ${result.data!!.data}")
-
-                            val image = result.data!!.data!!
-                            requireContext().contentResolver.takePersistableUriPermission(image,
-                                Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                            arcade.image = image
-//
-//                            Picasso.get()
-//                                .load(arcade.image)
-//                                .into(fragBinding.arcadeImage)
-                            fragBinding.chooseImage.setText(R.string.change_arcade_image)
-                        } // end of if
+        intentLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            when (result.resultCode) {
+                RESULT_OK -> {
+                    result.data?.data?.let { uri ->
+                        Timber.i("Selected image URI: $uri")
+                        arcade.image = uri.toString()
+                        Picasso.get().load(uri).into(fragBinding.arcadeImage)
+                        FirebaseImageManager.uploadArcadeImage(arcade) { imageUrl ->
+                            arcade.image = imageUrl
+                        }
                     }
-                    AppCompatActivity.RESULT_CANCELED -> { } else -> { }
                 }
+                RESULT_CANCELED -> Timber.i("Image selection cancelled")
+                else -> Timber.e("Unexpected result code $result.resultCode")
             }
+        }
     }
 
     private fun registerMapCallback() {

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.setu.retro_letsgo.firebase.FirebaseDBManager
+import ie.setu.retro_letsgo.firebase.FirebaseImageManager
 import ie.setu.retro_letsgo.models.ArcadeManager
 import ie.setu.retro_letsgo.models.ArcadeModel
 
