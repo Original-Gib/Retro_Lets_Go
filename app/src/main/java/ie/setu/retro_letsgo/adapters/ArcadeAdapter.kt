@@ -59,6 +59,11 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
             binding.executePendingBindings()
         }
     }
+
+    fun setFilteredList(arcades: List<ArcadeModel>){
+        this.arcades = arcades
+        notifyDataSetChanged()
+    }
 }
 
 

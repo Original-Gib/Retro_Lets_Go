@@ -8,6 +8,8 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.adapters.ArcadeAdapter
 import ie.setu.retro_letsgo.adapters.ArcadeListener
@@ -31,6 +34,7 @@ import ie.setu.retro_letsgo.models.ArcadeModel
 import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 import ie.setu.retro_letsgo.utils.SwipeToDeleteCallback
 import ie.setu.retro_letsgo.utils.SwipeToEditCallback
+import java.util.Locale
 
 class ArcadeListFragment : Fragment(), ArcadeListener {
 
@@ -39,6 +43,9 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
     lateinit var app: MainApp
     private lateinit var arcadeListViewModel: ArcadeListViewModel
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+    private lateinit var searchView: SearchView
+    private lateinit var arcades: ArrayList<ArcadeModel>
+    private lateinit var adapter: ArcadeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,8 +64,25 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
 
         arcadeListViewModel = ViewModelProvider(this).get(ArcadeListViewModel::class.java)
         arcadeListViewModel.observableArcadesList.observe(viewLifecycleOwner, Observer { arcades ->
-            arcades?.let { render(arcades) }
+            arcades?.let {
+                this.arcades = ArrayList(it) // Update the arcades list
+                render(arcades)
+            }
         })
+
+        searchView = fragBinding.searchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterList(newText)
+                return true
+            }
+
+        })
+
 
         val fab: FloatingActionButton = fragBinding.fab
         fab.setOnClickListener {
@@ -153,6 +177,20 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
         val action = ArcadeListFragmentDirections.actionArcadeListFragmentToArcadeDetailsFragment(arcade.uid)
         if(!arcadeListViewModel.readOnly.value!!)
             findNavController().navigate(action)
+    }
+
+    private fun filterList(query: String?) {
+        query?.let {
+            val filteredList = arcades.filter { arcade ->
+                arcade.title.toLowerCase(Locale.ROOT).contains(it.toLowerCase(Locale.ROOT))
+            }
+
+            if (filteredList.isEmpty()) {
+                Snackbar.make(fragBinding.root, "No Arcades Found", Snackbar.LENGTH_SHORT).show()
+            } else {
+                (fragBinding.recyclerView.adapter as? ArcadeAdapter)?.setFilteredList(filteredList)
+            }
+        }
     }
 
 }
