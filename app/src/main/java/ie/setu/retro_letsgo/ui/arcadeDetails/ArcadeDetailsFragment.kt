@@ -34,7 +34,6 @@ class ArcadeDetailsFragment : Fragment() {
     private val fragBinding get() = _fragBinding!!
     var arcade = ArcadeModel()
     private lateinit var viewModel: ArcadeDetailsViewModel
-    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     private lateinit var intentLauncher : ActivityResultLauncher<Intent>
     private lateinit var mapIntentLauncher : ActivityResultLauncher<Intent>
     private val loggedInViewModel : LoggedInViewModel by activityViewModels()
@@ -50,12 +49,13 @@ class ArcadeDetailsFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ArcadeDetailsViewModel::class.java)
         viewModel.observableArcade.observe(viewLifecycleOwner, Observer { render() })
 
-        if (arcade.image != null && arcade.image.isNotEmpty()) {
+        if (viewModel.observableArcade.value?.image != null && arcade.image.isNotEmpty()) {
             Timber.i("Loading image: ${arcade.image}")
             Picasso.get()
-                .load(arcade.image)
+                .load(viewModel.observableArcade.value?.image)
                 .into(fragBinding.arcadeImage)
         }
+        Timber.i("${arcade.image}")
 
         setButtonListener(fragBinding)
 
@@ -67,13 +67,16 @@ class ArcadeDetailsFragment : Fragment() {
 
     private fun render() {
         fragBinding.arcadevm = viewModel
+        val arcadeImage = viewModel.observableArcade.value?.image
+        if (!arcadeImage.isNullOrEmpty()) {
+            Picasso.get().load(arcadeImage).into(fragBinding.arcadeImage)
+        }
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.getArcade(loggedInViewModel.liveFirebaseUser.value?.uid!!,
             args.id)
-
     }
 
     override fun onDestroyView() {
@@ -114,6 +117,7 @@ class ArcadeDetailsFragment : Fragment() {
                 arcade.description = fragBinding.description.text.toString()
                 arcade.phoneNumber = fragBinding.arcadePhoneNumber.text.toString()
                 arcade.email = loggedInViewModel.liveFirebaseUser.value?.email!!
+                arcade.uid = loggedInViewModel.liveFirebaseUser.value?.uid!!
 
                 viewModel.updateArcade(loggedInViewModel.liveFirebaseUser.value?.uid!!, args.id, arcade)
                 Snackbar.make(it, R.string.arcade_saved, Snackbar.LENGTH_LONG).show()

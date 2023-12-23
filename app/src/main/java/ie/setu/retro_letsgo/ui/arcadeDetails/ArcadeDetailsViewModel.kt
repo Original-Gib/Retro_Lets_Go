@@ -18,8 +18,7 @@ class ArcadeDetailsViewModel : ViewModel() {
     fun getArcade(userid:String, id: String) {
         try {
             FirebaseDBManager.findById(userid, id, arcade)
-            Timber.i("Detail getArcade() Success : ${
-                arcade.value.toString()}")
+            Timber.i("Detail getArcade() Success : ${arcade.toString()}")
         }
         catch (e: Exception) {
             Timber.i("Detail getArcade() Error : $e.message")

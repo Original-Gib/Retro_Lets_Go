@@ -27,10 +27,10 @@ class ArcadeListViewModel: ViewModel() {
         readOnly.value = false
         try {
             FirebaseDBManager.findAll(liveFirebaseUser.value?.uid!!,arcadesList)
-            Timber.i("Report Load Success : ${arcadesList.value.toString()}")
+            Timber.i("Arcade List Load Success : ${arcadesList.value.toString()}")
         }
         catch (e: Exception) {
-            Timber.i("Report Load Error : $e.message")
+            Timber.i("Arcade List Load Error : $e.message")
         }
     }
 
