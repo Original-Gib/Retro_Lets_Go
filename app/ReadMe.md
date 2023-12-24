@@ -19,7 +19,7 @@ Retro - Let's Go is an app for retro gaming enthusiasts
 
 ## UML & Class Diagrams
 
-![][image1]
+https://github.com/Original-Gib/Retro_Lets_Go/blob/59b47a90bf014e678d39a9129a83672fecfc59a8/app/RetroLetsGoUml.png
 
 ## UX Approach
 
@@ -50,7 +50,3 @@ Android is not an environment I am too familiar with, coupled with the fact that
 - Game Camera feature - https://developer.android.com/guide/topics/media/camera
 - Night Mode feature - https://www.section.io/engineering-education/how-to-implement-dark-mode-in-android-studio/
 
-
-
-
-[image1]: /RetroLetsGoUml.png
