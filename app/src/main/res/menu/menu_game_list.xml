@@ -5,8 +5,8 @@
     <item
         android:id="@+id/gameFragment"
         android:icon="@android:drawable/ic_menu_add"
+        android:iconTint="@color/white"
         android:title="@string/menu_addGame"
-        app:showAsAction="always"
-        android:iconTint="@color/white" />
+        app:showAsAction="always" />
 
 </menu>

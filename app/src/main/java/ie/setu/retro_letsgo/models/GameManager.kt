@@ -2,7 +2,7 @@ package ie.setu.retro_letsgo.models
 
 import timber.log.Timber.i
 
-object GameManager: GameStore {
+object GameManager : GameStore {
 
     val games = ArrayList<GameModel>()
     override fun findAll(): List<GameModel> {
@@ -32,10 +32,10 @@ object GameManager: GameStore {
     }
 
     fun logAll() {
-        games.forEach{ i("${it}") }
+        games.forEach { i("${it}") }
     }
 
-    override fun findById(id:Long) : GameModel? {
+    override fun findById(id: Long): GameModel? {
         val foundGame: GameModel? = games.find { it.id == id }
         return foundGame
     }

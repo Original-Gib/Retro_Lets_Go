@@ -20,12 +20,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.auth.FirebaseUser
-import com.squareup.picasso.Picasso
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.HomeBinding
 import ie.setu.retro_letsgo.databinding.NavHeaderBinding
 import ie.setu.retro_letsgo.firebase.FirebaseImageManager
-import ie.setu.retro_letsgo.utils.customTransformation
 import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 import ie.setu.retro_letsgo.ui.auth.Login
 import ie.setu.retro_letsgo.ui.map.MapsViewModel
@@ -37,12 +35,12 @@ import timber.log.Timber
 class Home : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var homeBinding : HomeBinding
-    private lateinit var navHeaderBinding : NavHeaderBinding
+    private lateinit var homeBinding: HomeBinding
+    private lateinit var navHeaderBinding: NavHeaderBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var loggedInViewModel : LoggedInViewModel
-    private val mapsViewModel : MapsViewModel by viewModels()
-    private lateinit var headerView : View
+    private lateinit var loggedInViewModel: LoggedInViewModel
+    private val mapsViewModel: MapsViewModel by viewModels()
+    private lateinit var headerView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +53,15 @@ class Home : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment)
 
-        appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.arcadeFragment, R.id.arcadeListFragment, R.id.gameFragment, R.id.gameListFragment, R.id.mapsFragment), drawerLayout)
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.arcadeFragment,
+                R.id.arcadeListFragment,
+                R.id.gameFragment,
+                R.id.gameListFragment,
+                R.id.mapsFragment
+            ), drawerLayout
+        )
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         val navView = homeBinding.navView
@@ -66,17 +71,17 @@ class Home : AppCompatActivity() {
 
         nightModeSwitchItem.setOnMenuItemClickListener {
             val mode: Int
-             if (nightModeSwitchItem.isChecked) {
+            if (nightModeSwitchItem.isChecked) {
                 mode = AppCompatDelegate.MODE_NIGHT_YES // Switch to day mode
             } else {
-               mode = AppCompatDelegate.MODE_NIGHT_NO // Switch to night mode
+                mode = AppCompatDelegate.MODE_NIGHT_NO // Switch to night mode
             }
             AppCompatDelegate.setDefaultNightMode(mode)
             nightModeSwitchItem.isChecked = !nightModeSwitchItem.isChecked
             true
         }
 
-        if(checkLocationPermissions(this)) {
+        if (checkLocationPermissions(this)) {
             mapsViewModel.updateCurrentLocation()
         }
 
@@ -118,7 +123,8 @@ class Home : AppCompatActivity() {
                         R.drawable.pacghost,
                         navHeaderBinding.navHeaderImage
                     )
-                }        } else // load existing image from firebase
+                }
+            } else // load existing image from firebase
             {
                 Timber.i("App Loading Existing imageUri")
                 FirebaseImageManager.updateUserImage(
@@ -126,11 +132,13 @@ class Home : AppCompatActivity() {
                     FirebaseImageManager.imageUri.value,
                     navHeaderBinding.navHeaderImage, false
                 )
-            }    }
+            }
+        }
         navHeaderBinding.navHeaderEmail.text = currentUser.email
-        if(currentUser.displayName != null)
+        if (currentUser.displayName != null)
             navHeaderBinding.navHeaderName.text = currentUser.displayName
     }
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
@@ -145,7 +153,11 @@ class Home : AppCompatActivity() {
     }
 
     @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (isPermissionGranted(requestCode, grantResults))
             mapsViewModel.updateCurrentLocation()

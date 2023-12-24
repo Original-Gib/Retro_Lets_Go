@@ -2,9 +2,8 @@ package ie.setu.retro_letsgo.activities
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,7 +15,11 @@ import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.databinding.ActivityMapBinding
 import ie.setu.retro_letsgo.models.Location
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener, GoogleMap.OnMarkerClickListener {
+//file is used within the arcade fragment to selected the location of an arcade and apply the lat
+//and lng co-ordinates to the arcade
+
+class MapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerDragListener,
+    GoogleMap.OnMarkerClickListener {
 
     private var location = Location()
     private lateinit var map: GoogleMap

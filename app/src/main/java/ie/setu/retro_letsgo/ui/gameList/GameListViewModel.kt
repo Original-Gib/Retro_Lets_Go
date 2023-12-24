@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import ie.setu.retro_letsgo.models.GameManager
 import ie.setu.retro_letsgo.models.GameModel
 
-class GameListViewModel: ViewModel() {
+class GameListViewModel : ViewModel() {
 
     private val gamesList = MutableLiveData<List<GameModel>>()
 

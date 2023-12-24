@@ -1,55 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="arcade"
             type="ie.setu.retro_letsgo.models.ArcadeModel" />
     </data>
-<androidx.cardview.widget.CardView
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:elevation="24dp">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:layout_marginBottom="8dp"
+        android:elevation="24dp">
 
-        <ImageView
-            android:id="@+id/imageIcon"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="16dp"
-            android:contentDescription="@string/change_arcade_image" />
-
-        <TextView
-            android:id="@+id/arcadeTitle"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:textSize="30sp"
-            android:layout_toEndOf="@+id/imageIcon"
-            android:text="@{arcade.title}"
-            tools:text="A Title" />
+            android:padding="16dp">
 
-        <TextView
-            android:id="@+id/arcadeDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/arcadeTitle"
-            android:layout_toEndOf="@+id/imageIcon"
-            android:text="@{arcade.description}"
-            tools:text="A Description" />
+            <ImageView
+                android:id="@+id/imageIcon"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginEnd="16dp"
+                android:contentDescription="@string/change_arcade_image" />
 
-    </RelativeLayout>
-</androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/arcadeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/imageIcon"
+                android:text="@{arcade.title}"
+                android:textSize="30sp"
+                tools:text="A Title" />
+
+            <TextView
+                android:id="@+id/arcadeDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/arcadeTitle"
+                android:layout_toEndOf="@+id/imageIcon"
+                android:text="@{arcade.description}"
+                tools:text="A Description" />
+
+        </RelativeLayout>
+    </androidx.cardview.widget.CardView>
 
 </layout>

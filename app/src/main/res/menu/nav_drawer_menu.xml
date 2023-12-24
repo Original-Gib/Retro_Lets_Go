@@ -30,24 +30,24 @@
         </menu>
     </item>
     <item android:title="Access Control">
-      <menu>
-        <item
-            android:id="@+id/nav_sign_out"
-            android:icon="@drawable/baseline_logout_24"
-            android:onClick="signOut"
-            android:title="@string/sign_out" />
-      </menu>
+        <menu>
+            <item
+                android:id="@+id/nav_sign_out"
+                android:icon="@drawable/baseline_logout_24"
+                android:onClick="signOut"
+                android:title="@string/sign_out" />
+        </menu>
     </item>
     <item android:title="Settings">
-    <menu>
-        <item
-            android:id="@+id/night_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_mode_night"
-            android:title="Toggle Night Mode"
-            app:showAsAction="always" />
-    </menu>
+        <menu>
+            <item
+                android:id="@+id/night_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_mode_night"
+                android:title="Toggle Night Mode"
+                app:showAsAction="always" />
+        </menu>
     </item>
 
 </menu>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/arcadeFragment"
@@ -8,103 +7,103 @@
     android:layout_height="match_parent"
     tools:context="ie.setu.retro_letsgo.ui.arcade.ArcadeFragment">
 
-        <EditText
-            android:id="@+id/arcadeTitle"
-            android:layout_width="365dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="@string/arcadeTitle"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+    <EditText
+        android:id="@+id/arcadeTitle"
+        android:layout_width="365dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/arcadeTitle"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <EditText
-            android:id="@+id/description"
-            android:layout_width="365dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="@string/arcadeDescription"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/arcadeTitle" />
+    <EditText
+        android:id="@+id/description"
+        android:layout_width="365dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/arcadeDescription"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arcadeTitle" />
 
-        <EditText
-            android:id="@+id/arcadePhoneNumber"
-            android:layout_width="365dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:ems="10"
-            android:hint="@string/arcadePhoneNumber"
-            android:inputType="phone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/description" />
+    <EditText
+        android:id="@+id/arcadePhoneNumber"
+        android:layout_width="365dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:hint="@string/arcadePhoneNumber"
+        android:inputType="phone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
-        <Button
-            android:id="@+id/btnAdd"
-            android:layout_width="365dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:shadowColor="@color/color_primary"
-            android:backgroundTint="@color/color_secondary"
-            android:textColor="@color/white"
-            android:text="@string/button_addArcade"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/arcadePhoneNumber" />
+    <Button
+        android:id="@+id/btnAdd"
+        android:layout_width="365dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:backgroundTint="@color/color_secondary"
+        android:shadowColor="@color/color_primary"
+        android:text="@string/button_addArcade"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arcadePhoneNumber" />
 
-        <Button
-            android:id="@+id/chooseImage"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/color_secondary"
-            android:textColor="@color/white"
-            android:layout_marginTop="8dp"
-            android:text="@string/button_addImage"
-            app:layout_constraintStart_toStartOf="@+id/btnAdd"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
+    <Button
+        android:id="@+id/chooseImage"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/color_secondary"
+        android:text="@string/button_addImage"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="@+id/btnAdd"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
 
-        <Button
-            android:id="@+id/arcadeLocation"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:backgroundTint="@color/color_secondary"
-            android:textColor="@color/white"
-            android:text="@string/button_location"
-            app:layout_constraintEnd_toEndOf="@+id/btnAdd"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/chooseImage"
-            app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
+    <Button
+        android:id="@+id/arcadeLocation"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/color_secondary"
+        android:text="@string/button_location"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/btnAdd"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/chooseImage"
+        app:layout_constraintTop_toBottomOf="@+id/btnAdd" />
 
-        <ImageView
-            android:id="@+id/arcadeImage"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.555"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/arcadeLocation"
-            app:layout_constraintVertical_bias="0.173"
-            app:srcCompat="@drawable/ic_launcher_background" />
+    <ImageView
+        android:id="@+id/arcadeImage"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arcadeLocation"
+        app:layout_constraintVertical_bias="0.173"
+        app:srcCompat="@drawable/ic_launcher_background" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

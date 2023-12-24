@@ -10,7 +10,7 @@ internal fun getId(): Long {
     return lastId++
 }
 
-object ArcadeManager: ArcadeStore {
+object ArcadeManager : ArcadeStore {
 
     val arcades = ArrayList<ArcadeModel>()
 
@@ -52,7 +52,7 @@ object ArcadeManager: ArcadeStore {
 //    }
 
     fun logAll() {
-        arcades.forEach{ i("${it}")}
+        arcades.forEach { i("${it}") }
     }
 
     override fun findAll(arcadesList: MutableLiveData<List<ArcadeModel>>) {
@@ -66,7 +66,7 @@ object ArcadeManager: ArcadeStore {
     override fun findById(
         userid: String,
         arcadeid: String,
-        donation: MutableLiveData<ArcadeModel>
+        arcade: MutableLiveData<ArcadeModel>
     ) {
         TODO("Not yet implemented")
     }

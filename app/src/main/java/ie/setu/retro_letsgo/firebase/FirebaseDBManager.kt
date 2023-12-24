@@ -12,7 +12,10 @@ import ie.setu.retro_letsgo.models.ArcadeStore
 import timber.log.Timber
 
 object FirebaseDBManager : ArcadeStore {
-        var database: DatabaseReference = FirebaseDatabase.getInstance("https://retro---let-s-go-default-rtdb.europe-west1.firebasedatabase.app").reference
+    var database: DatabaseReference =
+        FirebaseDatabase.getInstance("https://retro---let-s-go-default-rtdb.europe-west1.firebasedatabase.app").reference
+
+    //Function to find all arcades
     override fun findAll(arcadesList: MutableLiveData<List<ArcadeModel>>) {
         database.child("arcades")
             .addValueEventListener(object : ValueEventListener {
@@ -35,6 +38,7 @@ object FirebaseDBManager : ArcadeStore {
             })
     }
 
+    //function to find all arcades for a user
     override fun findAll(userid: String, arcadesList: MutableLiveData<List<ArcadeModel>>) {
         database.child("user-arcades").child(userid)
             .addValueEventListener(object : ValueEventListener {
@@ -57,54 +61,57 @@ object FirebaseDBManager : ArcadeStore {
             })
     }
 
-        override fun create(firebaseUser: MutableLiveData<FirebaseUser>, arcade: ArcadeModel) {
-            Timber.i("Firebase DB Reference : $database")
+    //function to create a new arcade on firebase
+    override fun create(firebaseUser: MutableLiveData<FirebaseUser>, arcade: ArcadeModel) {
+        Timber.i("Firebase DB Reference : $database")
 
-            val uid = firebaseUser.value!!.uid
-            val key = database.child("arcades").push().key
-            if (key == null) {
-                Timber.i("Firebase Error : Key Empty")
-                return
-            }
-            arcade.uid = key
-            val arcadeValues = arcade.toMap()
-
-            val childAdd = HashMap<String, Any>()
-            childAdd["/arcades/$key"] = arcadeValues
-            childAdd["/user-arcades/$uid/$key"] = arcadeValues
-
-            database.updateChildren(childAdd)
-                .addOnSuccessListener {
-                    Timber.i("Data added successfully")
-                }
-                .addOnFailureListener {
-                    Timber.e("Error adding data: ${it.message}")
-                }
-
-            Timber.i("$arcadeValues")
+        val uid = firebaseUser.value!!.uid
+        val key = database.child("arcades").push().key
+        if (key == null) {
+            Timber.i("Firebase Error : Key Empty")
+            return
         }
+        arcade.uid = key
+        val arcadeValues = arcade.toMap()
 
+        val childAdd = HashMap<String, Any>()
+        childAdd["/arcades/$key"] = arcadeValues
+        childAdd["/user-arcades/$uid/$key"] = arcadeValues
+
+        database.updateChildren(childAdd)
+            .addOnSuccessListener {
+                Timber.i("Data added successfully")
+            }
+            .addOnFailureListener {
+                Timber.e("Error adding data: ${it.message}")
+            }
+
+        Timber.i("$arcadeValues")
+    }
+
+    //function to delete an arcade from firebase
     override fun delete(userid: String, arcadeid: String) {
 
-        val childDelete : MutableMap<String, Any?> = HashMap()
+        val childDelete: MutableMap<String, Any?> = HashMap()
         childDelete["/arcades/$arcadeid"] = null
         childDelete["/user-arcades/$userid/$arcadeid"] = null
 
         database.updateChildren(childDelete)
     }
 
+    //function to update an arcade on firebase
     override fun update(userid: String, arcadeid: String, arcade: ArcadeModel) {
 
         val arcadeValues = arcade.toMap()
 
-        val childUpdate : MutableMap<String, Any?> = HashMap()
+        val childUpdate: MutableMap<String, Any?> = HashMap()
         childUpdate["arcades/$arcadeid"] = arcadeValues
         childUpdate["user-arcades/$userid/$arcadeid"] = arcadeValues
 
         database.updateChildren(childUpdate)
             .addOnSuccessListener {
-            Timber.i("Data updated successfully")
-        }
+                Timber.i("Data updated successfully")
+            }
             .addOnFailureListener {
                 Timber.e("Error updating data: ${it.message}")
             }
@@ -112,14 +119,15 @@ object FirebaseDBManager : ArcadeStore {
         Timber.i("$arcadeValues")
     }
 
+    //function to find an arcade based on the ID string
     override fun findById(userid: String, arcadeid: String, arcade: MutableLiveData<ArcadeModel>) {
 
         database.child("user-arcades").child(userid)
             .child(arcadeid).get().addOnSuccessListener {
                 arcade.value = it.getValue(ArcadeModel::class.java)
                 Timber.i("firebase Got value ${it.value}")
-            }.addOnFailureListener{
+            }.addOnFailureListener {
                 Timber.e("firebase Error getting data $it")
             }
     }
-    }
+}

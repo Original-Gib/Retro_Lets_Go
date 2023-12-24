@@ -9,11 +9,11 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
+import ie.setu.retro_letsgo.models.ArcadeModel
 import ie.setu.retro_letsgo.utils.customTransformation
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
-import com.squareup.picasso.Target
-import ie.setu.retro_letsgo.models.ArcadeModel
 import java.util.UUID
 
 
@@ -21,6 +21,8 @@ object FirebaseImageManager {
 
     var storage = FirebaseStorage.getInstance().reference
     var imageUri = MutableLiveData<Uri>()
+
+    //Retrieve profile picture from firebase if it exists. If not display the pacghost image
     fun checkStorageForExistingProfilePic(userid: String) {
         val imageRef = storage.child("photos").child("${userid}.jpg")
         val defaultImageRef = storage.child("pacghost")
@@ -34,7 +36,9 @@ object FirebaseImageManager {
             imageUri.value = Uri.EMPTY
         }
     }
-    fun uploadImageToFirebase(userid: String, bitmap: Bitmap, updating : Boolean) {
+
+    //function to upload an image to firebase under the photos folder
+    fun uploadImageToFirebase(userid: String, bitmap: Bitmap, updating: Boolean) {
         // Get the data from an ImageView as bytes
         val imageRef = storage.child("photos").child("${userid}.jpg")
         //val bitmap = (imageView as BitmapDrawable).bitmap
@@ -45,7 +49,7 @@ object FirebaseImageManager {
         val data = baos.toByteArray()
 
         imageRef.metadata.addOnSuccessListener { //File Exists
-            if(updating) // Update existing Image
+            if (updating) // Update existing Image
             {
                 uploadTask = imageRef.putBytes(data)
                 uploadTask.addOnSuccessListener { ut ->
@@ -64,29 +68,34 @@ object FirebaseImageManager {
         }
     }
 
-    fun updateUserImage(userid: String, imageUri : Uri?, imageView: ImageView, updating : Boolean) {
+    //function to update the image of a logged in user
+    fun updateUserImage(userid: String, imageUri: Uri?, imageView: ImageView, updating: Boolean) {
         Picasso.get().load(imageUri)
             .resize(200, 200)
             .transform(customTransformation())
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .centerCrop()
             .into(object : Target {
-                override fun onBitmapLoaded(bitmap: Bitmap?,
-                                            from: Picasso.LoadedFrom?
+                override fun onBitmapLoaded(
+                    bitmap: Bitmap?,
+                    from: Picasso.LoadedFrom?
                 ) {
-                    Timber.i("DX onBitmapLoaded $bitmap")
-                    uploadImageToFirebase(userid, bitmap!!,updating)
+                    Timber.i("Retro - Lets Go onBitmapLoaded $bitmap")
+                    uploadImageToFirebase(userid, bitmap!!, updating)
                     imageView.setImageBitmap(bitmap)
                 }
 
-                override fun onBitmapFailed(e: java.lang.Exception?,
-                                            errorDrawable: Drawable?) {
-                    Timber.i("DX onBitmapFailed $e")
+                override fun onBitmapFailed(
+                    e: java.lang.Exception?,
+                    errorDrawable: Drawable?
+                ) {
+                    Timber.i("Retro - Lets Go onBitmapFailed $e")
                 }
 
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
             })
     }
+
 
     fun updateDefaultImage(userid: String, resource: Int, imageView: ImageView) {
         Picasso.get().load(resource)
@@ -95,23 +104,27 @@ object FirebaseImageManager {
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .centerCrop()
             .into(object : Target {
-                override fun onBitmapLoaded(bitmap: Bitmap?,
-                                            from: Picasso.LoadedFrom?
+                override fun onBitmapLoaded(
+                    bitmap: Bitmap?,
+                    from: Picasso.LoadedFrom?
                 ) {
-                    Timber.i("DX onBitmapLoaded $bitmap")
-                    uploadImageToFirebase(userid, bitmap!!,false)
+                    Timber.i("Retro - Lets Go onBitmapLoaded $bitmap")
+                    uploadImageToFirebase(userid, bitmap!!, false)
                     imageView.setImageBitmap(bitmap)
                 }
 
-                override fun onBitmapFailed(e: java.lang.Exception?,
-                                            errorDrawable: Drawable?) {
-                    Timber.i("DX onBitmapFailed $e")
+                override fun onBitmapFailed(
+                    e: java.lang.Exception?,
+                    errorDrawable: Drawable?
+                ) {
+                    Timber.i("Retro - Lets Go onBitmapFailed $e")
                 }
 
                 override fun onPrepareLoad(placeHolderDrawable: Drawable?) {}
             })
     }
 
+    //function to upload an image under the arcades folder on Firebase storage
     fun uploadArcadeImage(arcade: ArcadeModel, callback: (String) -> Unit) {
         val imageUri = arcade.image
         val userid = arcade.uid

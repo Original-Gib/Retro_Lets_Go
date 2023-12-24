@@ -3,7 +3,6 @@ package ie.setu.retro_letsgo.main
 import android.app.Application
 import ie.setu.retro_letsgo.models.ArcadeManager
 import ie.setu.retro_letsgo.models.ArcadeStore
-import ie.setu.retro_letsgo.models.GameJSONStore
 import ie.setu.retro_letsgo.models.GameManager
 import ie.setu.retro_letsgo.models.GameStore
 import timber.log.Timber

@@ -9,7 +9,7 @@
         android:id="@+id/arcadeFragment"
         android:name="ie.setu.retro_letsgo.ui.arcade.ArcadeFragment"
         android:label="@string/action_arcade"
-        tools:layout="@layout/fragment_arcade" >
+        tools:layout="@layout/fragment_arcade">
         <action
             android:id="@+id/action_arcadeFragment_to_arcadeListFragment"
             app:destination="@id/arcadeListFragment"
@@ -26,7 +26,7 @@
         android:id="@+id/arcadeListFragment"
         android:name="ie.setu.retro_letsgo.ui.arcadeList.ArcadeListFragment"
         android:label="@string/action_arcadeList"
-        tools:layout="@layout/fragment_arcade_list" >
+        tools:layout="@layout/fragment_arcade_list">
         <action
             android:id="@+id/action_arcadeListFragment_to_arcadeFragment"
             app:destination="@id/arcadeFragment"
@@ -49,7 +49,7 @@
         android:id="@+id/gameFragment"
         android:name="ie.setu.retro_letsgo.ui.game.gameFragment"
         android:label="@string/action_game"
-        tools:layout="@layout/fragment_game" >
+        tools:layout="@layout/fragment_game">
         <action
             android:id="@+id/action_gameFragment_to_arcadeFragment"
             app:destination="@id/arcadeFragment" />
@@ -64,7 +64,7 @@
         android:id="@+id/gameListFragment"
         android:name="ie.setu.retro_letsgo.ui.gameList.GameListFragment"
         android:label="@string/action_gameList"
-        tools:layout="@layout/fragment_game_list" >
+        tools:layout="@layout/fragment_game_list">
         <action
             android:id="@+id/action_gameListFragment_to_arcadeListFragment"
             app:destination="@id/arcadeListFragment" />
@@ -87,7 +87,7 @@
         android:id="@+id/arcadeDetailsFragment"
         android:name="ie.setu.retro_letsgo.ui.arcadeDetails.ArcadeDetailsFragment"
         android:label="Arcade Details"
-        tools:layout="@layout/fragment_arcade_details" >
+        tools:layout="@layout/fragment_arcade_details">
         <action
             android:id="@+id/action_arcadeDetailsFragment_to_arcadeListFragment"
             app:destination="@id/arcadeListFragment" />
@@ -102,7 +102,7 @@
         android:id="@+id/gameDetailsFragment"
         android:name="ie.setu.retro_letsgo.ui.gameDetails.GameDetailsFragment"
         android:label="Game Details"
-        tools:layout="@layout/fragment_game_details" >
+        tools:layout="@layout/fragment_game_details">
         <action
             android:id="@+id/action_gameDetailsFragment_to_gameListFragment"
             app:destination="@id/gameListFragment" />
@@ -117,7 +117,7 @@
         android:id="@+id/mapsFragment"
         android:name="ie.setu.retro_letsgo.ui.map.MapsFragment"
         android:label="Arcade Map"
-        tools:layout="@layout/fragment_maps" >
+        tools:layout="@layout/fragment_maps">
         <action
             android:id="@+id/action_mapsFragment_to_arcadeDetailsFragment"
             app:destination="@id/arcadeDetailsFragment" />

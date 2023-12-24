@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="gamevm"
             type="ie.setu.retro_letsgo.ui.gameDetails.GameDetailsViewModel" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameGameLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="ie.setu.retro_letsgo.ui.game.gameFragment">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/frameGameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="ie.setu.retro_letsgo.ui.game.gameFragment">
 
 
         <EditText
@@ -26,8 +25,8 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/gameTitle"
-            android:text="@{gamevm.observableGame.gameTitle}"
             android:inputType="text"
+            android:text="@{gamevm.observableGame.gameTitle}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
@@ -42,8 +41,8 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/gameDescription"
-            android:text="@{gamevm.observableGame.gameDescription}"
             android:inputType="textPersonName"
+            android:text="@{gamevm.observableGame.gameDescription}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameTitle" />
@@ -57,8 +56,8 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/gameSystem"
-            android:text="@{gamevm.observableGame.gameSystem}"
             android:inputType="textPersonName"
+            android:text="@{gamevm.observableGame.gameSystem}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameDescription" />
@@ -73,8 +72,8 @@
             android:layout_marginEnd="8dp"
             android:ems="10"
             android:hint="@string/gameHighScore"
-            android:text="@{gamevm.observableGame.highScore}"
             android:inputType="number"
+            android:text="@{gamevm.observableGame.highScore}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameSystem" />
@@ -83,11 +82,11 @@
             android:id="@+id/btnAddGame"
             android:layout_width="365dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
             android:backgroundTint="@color/color_secondary"
-            android:textColor="@color/white"
             android:text="@string/button_addGame"
+            android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/gameHighScore" />
@@ -98,8 +97,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:backgroundTint="@color/color_secondary"
-            android:textColor="@color/white"
             android:text="@string/take_picture"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="@+id/btnAddGame"
             app:layout_constraintTop_toBottomOf="@+id/btnAddGame" />
 
@@ -119,6 +118,6 @@
             app:layout_constraintVertical_bias="0.173"
             app:srcCompat="@drawable/ic_launcher_background" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

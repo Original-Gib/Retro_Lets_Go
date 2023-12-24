@@ -1,13 +1,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
+
         <variable
             name="game"
             type="ie.setu.retro_letsgo.models.GameModel" />
     </data>
 
-    <androidx.cardview.widget.CardView
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.cardview.widget.CardView xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -23,9 +23,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:textSize="30sp"
                 android:text="@{game.gameTitle}"
-                tools:text="A Game"/>
+                android:textSize="30sp"
+                tools:text="A Game" />
 
             <TextView
                 android:id="@+id/gameDescription"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/gameTitle"
                 android:text="@{game.gameDescription}"
-                tools:text="A Game Description"/>
+                tools:text="A Game Description" />
 
         </RelativeLayout>
     </androidx.cardview.widget.CardView>

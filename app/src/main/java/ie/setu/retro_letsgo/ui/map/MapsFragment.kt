@@ -1,8 +1,6 @@
 package ie.setu.retro_letsgo.ui.map
 
 import android.annotation.SuppressLint
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.Menu
@@ -13,13 +11,12 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -28,7 +25,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import ie.setu.retro_letsgo.R
 import ie.setu.retro_letsgo.models.ArcadeModel
-import ie.setu.retro_letsgo.ui.arcade.ArcadeViewModel
 import ie.setu.retro_letsgo.ui.arcadeList.ArcadeListViewModel
 import ie.setu.retro_letsgo.ui.auth.LoggedInViewModel
 
@@ -36,7 +32,7 @@ class MapsFragment : Fragment() {
 
     private val mapsViewModel: MapsViewModel by activityViewModels()
     private val arcadeListViewModel: ArcadeListViewModel by activityViewModels()
-    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+    private val loggedInViewModel: LoggedInViewModel by activityViewModels()
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -82,27 +78,30 @@ class MapsFragment : Fragment() {
         if (arcadesList.isNotEmpty()) {
             mapsViewModel.map.clear()
             arcadesList.forEach {
-                markerColour = if(it.email.equals(this.arcadeListViewModel.liveFirebaseUser.value!!.email))
-                    BitmapDescriptorFactory.HUE_AZURE + 5
-                else
-                    BitmapDescriptorFactory.HUE_RED
+                markerColour =
+                    if (it.email.equals(this.arcadeListViewModel.liveFirebaseUser.value!!.email))
+                        BitmapDescriptorFactory.HUE_AZURE + 5
+                    else
+                        BitmapDescriptorFactory.HUE_RED
 
                 mapsViewModel.map.addMarker(
                     MarkerOptions().position(LatLng(it.lat, it.lng))
                         .title("${it.title} - Phone: ${it.phoneNumber}")
                         .snippet(it.description)
-                        .icon(BitmapDescriptorFactory.defaultMarker(markerColour ))
-                )        }
+                        .icon(BitmapDescriptorFactory.defaultMarker(markerColour))
+                )
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
-        loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner) {
-                firebaseUser -> if (firebaseUser != null) {
-            arcadeListViewModel.liveFirebaseUser.value = firebaseUser
-            arcadeListViewModel.load()
-        }        }
+        loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner) { firebaseUser ->
+            if (firebaseUser != null) {
+                arcadeListViewModel.liveFirebaseUser.value = firebaseUser
+                arcadeListViewModel.load()
+            }
+        }
     }
 
     private fun setupMenu() {
@@ -116,10 +115,10 @@ class MapsFragment : Fragment() {
 
                 val item = menu.findItem(R.id.toggleArcades) as MenuItem
                 item.setActionView(R.layout.togglebutton_layout)
-                val toggleDonations: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
-                toggleDonations.isChecked = false
+                val toggleArcades: SwitchCompat = item.actionView!!.findViewById(R.id.toggleButton)
+                toggleArcades.isChecked = false
 
-                toggleDonations.setOnCheckedChangeListener { _, isChecked ->
+                toggleArcades.setOnCheckedChangeListener { _, isChecked ->
                     if (isChecked) arcadeListViewModel.loadAll()
                     else arcadeListViewModel.load()
                 }
@@ -127,8 +126,11 @@ class MapsFragment : Fragment() {
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Validate and handle the selected menu item
-                return NavigationUI.onNavDestinationSelected(menuItem,
-                    requireView().findNavController())
-            }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+                return NavigationUI.onNavDestinationSelected(
+                    menuItem,
+                    requireView().findNavController()
+                )
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 }

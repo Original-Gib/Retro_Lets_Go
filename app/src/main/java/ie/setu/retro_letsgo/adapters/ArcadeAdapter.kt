@@ -13,7 +13,11 @@ interface ArcadeListener {
     fun onArcadeClick(arcade: ArcadeModel)
 }
 
-class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private val listener: ArcadeListener, private val readOnly: Boolean) : RecyclerView.Adapter<ArcadeAdapter.MainHolder>() {
+class ArcadeAdapter constructor(
+    private var arcades: List<ArcadeModel>,
+    private val listener: ArcadeListener,
+    private val readOnly: Boolean
+) : RecyclerView.Adapter<ArcadeAdapter.MainHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         val binding = CardArcadeBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,7 +34,7 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
 
     fun updateDataSet(newArcades: List<ArcadeModel>) {
         arcades = newArcades
-        notifyDataSetChanged() // Notify the adapter that the dataset has changed
+        notifyDataSetChanged()
     }
 
     fun removeAt(position: Int) {
@@ -40,14 +44,11 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
         }
     }
 
-   inner class MainHolder(private val binding: CardArcadeBinding, private val readOnly: Boolean) :
+    inner class MainHolder(private val binding: CardArcadeBinding, private val readOnly: Boolean) :
         RecyclerView.ViewHolder(binding.root) {
 
-       val readOnlyRow = readOnly
+        val readOnlyRow = readOnly
         fun bind(arcade: ArcadeModel, listener: ArcadeListener) {
-//            binding.arcadeTitle.text = arcade.title
-//            binding.arcadeDescription.text = arcade.description
-
             binding.arcade = arcade
             binding.root.tag = arcade
             Picasso.get().load(arcade.image.toUri())
@@ -60,7 +61,8 @@ class ArcadeAdapter constructor(private var arcades: List<ArcadeModel>, private 
         }
     }
 
-    fun setFilteredList(arcades: List<ArcadeModel>){
+    //Function to set the list in the recycler view to the filtered list and update the dataset
+    fun setFilteredList(arcades: List<ArcadeModel>) {
         this.arcades = arcades
         notifyDataSetChanged()
     }

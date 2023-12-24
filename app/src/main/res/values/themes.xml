@@ -39,7 +39,7 @@
     </style>
 
     <!-- Light EditTexts -->
-    <style name="ThemeOverlay.MyLightEditText" parent="ThemeOverlay.AppCompat.Dark"/>
+    <style name="ThemeOverlay.MyLightEditText" parent="ThemeOverlay.AppCompat.Dark" />
 
     <style name="ThemeOverlay.MyTextDetail" parent="Theme.RetroLetsGo">
         <item name="android:layout_width">wrap_content</item>

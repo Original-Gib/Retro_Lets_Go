@@ -1,12 +1,12 @@
 package ie.setu.retro_letsgo.ui.game
 
+import android.Manifest
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
@@ -15,27 +15,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import ie.setu.retro_letsgo.databinding.FragmentGameBinding
-import ie.setu.retro_letsgo.main.MainApp
-import ie.setu.retro_letsgo.models.GameModel
-import android.Manifest
-import androidx.core.view.MenuHost
-import androidx.core.view.MenuProvider
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import ie.setu.retro_letsgo.R
-import ie.setu.retro_letsgo.ui.arcade.ArcadeViewModel
-import ie.setu.retro_letsgo.ui.arcadeList.ArcadeListFragmentDirections
-import ie.setu.retro_letsgo.ui.gameList.GameListFragment
-import ie.setu.retro_letsgo.ui.gameList.GameListFragmentDirections
+import ie.setu.retro_letsgo.databinding.FragmentGameBinding
+import ie.setu.retro_letsgo.models.GameModel
 
 class gameFragment : Fragment() {
 
@@ -56,12 +50,14 @@ class gameFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        _fragBinding = FragmentGameBinding.inflate(inflater, container,false)
+    ): View {
+        _fragBinding = FragmentGameBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         setupMenu()
         gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
-        gameViewModel.observableStatus.observe(viewLifecycleOwner, {status -> status.let { render(status) }})
+        gameViewModel.observableStatus.observe(
+            viewLifecycleOwner,
+            { status -> status.let { render(status) } })
         setButtonListener(fragBinding)
         return root
     }
@@ -74,7 +70,9 @@ class gameFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         gameViewModel = ViewModelProvider(this).get(GameViewModel::class.java)
-        gameViewModel.observableStatus.observe(viewLifecycleOwner, {status -> status.let { render(status) }})
+        gameViewModel.observableStatus.observe(
+            viewLifecycleOwner,
+            { status -> status.let { render(status) } })
     }
 
     fun setButtonListener(layout: FragmentGameBinding) {
@@ -97,7 +95,7 @@ class gameFragment : Fragment() {
             }
         }
 
-        fragBinding.btnAddGame.setOnClickListener() {
+        fragBinding.btnAddGame.setOnClickListener {
             var currentUserId = firebaseAuth.currentUser?.uid
             if (currentUserId != null) {
                 game.userId = currentUserId
@@ -110,13 +108,13 @@ class gameFragment : Fragment() {
                 Snackbar.make(it, R.string.enter_game_title, Snackbar.LENGTH_LONG)
                     .show()
             } else {
-                    gameViewModel.addGame(game)
+                gameViewModel.addGame(game)
                 Snackbar
                     .make(it, R.string.game_added, Snackbar.LENGTH_LONG)
                     .show()
-                }
             }
         }
+    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -148,7 +146,7 @@ class gameFragment : Fragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK){
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == AppCompatActivity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
             fragBinding.gameImage.setImageBitmap(imageBitmap)
         } else {
@@ -174,8 +172,10 @@ class gameFragment : Fragment() {
             }
 
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return NavigationUI.onNavDestinationSelected(menuItem,
-                    requireView().findNavController())
+                return NavigationUI.onNavDestinationSelected(
+                    menuItem,
+                    requireView().findNavController()
+                )
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
@@ -188,7 +188,9 @@ class gameFragment : Fragment() {
                     findNavController().popBackStack(R.id.gameListFragment, false)
                 }
             }
-            false -> Toast.makeText(context,getString(R.string.gameError), Toast.LENGTH_LONG).show()
+
+            false -> Toast.makeText(context, getString(R.string.gameError), Toast.LENGTH_LONG)
+                .show()
         }
     }
 }

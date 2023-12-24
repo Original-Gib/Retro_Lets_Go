@@ -4,10 +4,17 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseUser
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializationContext
+import com.google.gson.JsonSerializer
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
-import java.util.*
+import java.util.Random
 
 const val JSON_FILE = "arcades.json"
 val gsonBuilder: Gson = GsonBuilder().setPrettyPrinting()
@@ -33,12 +40,12 @@ class ArcadeJSONStore(private val context: Context) : ArcadeStore {
     override fun findById(
         userid: String,
         arcadeid: String,
-        donation: MutableLiveData<ArcadeModel>
+        arcade: MutableLiveData<ArcadeModel>
     ) {
         TODO("Not yet implemented")
     }
 
-    override fun create(firebaseUser: MutableLiveData<FirebaseUser>, donation: ArcadeModel) {
+    override fun create(firebaseUser: MutableLiveData<FirebaseUser>, arcade: ArcadeModel) {
         TODO("Not yet implemented")
     }
 
@@ -52,7 +59,7 @@ class ArcadeJSONStore(private val context: Context) : ArcadeStore {
 
 }
 
-class UriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
+class UriParser : JsonDeserializer<Uri>, JsonSerializer<Uri> {
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,

@@ -12,5 +12,5 @@ interface GameStore {
 
     fun findByUserId(id: String): List<GameModel>
 
-    fun findById(id:Long) : GameModel?
+    fun findById(id: Long): GameModel?
 }

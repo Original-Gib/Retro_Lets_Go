@@ -1,18 +1,17 @@
 package ie.setu.retro_letsgo.ui.arcadeList
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
@@ -38,25 +37,21 @@ import java.util.Locale
 
 class ArcadeListFragment : Fragment(), ArcadeListener {
 
+    //defining the variables
     private var _fragBinding: FragmentArcadeListBinding? = null
     private val fragBinding get() = _fragBinding!!
     lateinit var app: MainApp
     private lateinit var arcadeListViewModel: ArcadeListViewModel
-    private val loggedInViewModel : LoggedInViewModel by activityViewModels()
+    private val loggedInViewModel: LoggedInViewModel by activityViewModels()
     private lateinit var searchView: SearchView
     private lateinit var arcades: ArrayList<ArcadeModel>
     private lateinit var adapter: ArcadeAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        setHasOptionsMenu(true)
-
-    }
-
+    //creating an inflating the view and setting the binding to be associated with the arcadeListFragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _fragBinding = FragmentArcadeListBinding.inflate(inflater, container, false)
         val root = fragBinding.root
         setupMenu()
@@ -70,8 +65,9 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
             }
         })
 
+        //implementing the search feature
         searchView = fragBinding.searchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -94,8 +90,10 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = fragBinding.recyclerView.adapter as ArcadeAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
-                arcadeListViewModel.delete(arcadeListViewModel.liveFirebaseUser.value?.uid!!,
-                    (viewHolder.itemView.tag as ArcadeModel).uid)
+                arcadeListViewModel.delete(
+                    arcadeListViewModel.liveFirebaseUser.value?.uid!!,
+                    (viewHolder.itemView.tag as ArcadeModel).uid
+                )
             }
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
@@ -112,6 +110,7 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
         return root
     }
 
+    //setting up the menu for arcadeLists
     private fun setupMenu() {
         (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
             override fun onPrepareMenu(menu: Menu) {
@@ -131,15 +130,21 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
                     else arcadeListViewModel.load()
                 }
             }
+
             override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
                 // Validate and handle the selected menu item
-                return NavigationUI.onNavDestinationSelected(menuItem,
-                    requireView().findNavController())
-            }     }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+                return NavigationUI.onNavDestinationSelected(
+                    menuItem,
+                    requireView().findNavController()
+                )
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
+    //rendering the arcadeList
     private fun render(arcadesList: List<ArcadeModel>) {
-        fragBinding.recyclerView.adapter = ArcadeAdapter(arcadesList, this, arcadeListViewModel.readOnly.value!!)
+        fragBinding.recyclerView.adapter =
+            ArcadeAdapter(arcadesList, this, arcadeListViewModel.readOnly.value!!)
         if (arcadesList.isEmpty()) {
             fragBinding.recyclerView.visibility = View.GONE
             fragBinding.arcadesNotFound.visibility = View.VISIBLE
@@ -158,11 +163,13 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
             }
     }
 
+    //removing the fragbinding
     override fun onDestroyView() {
         super.onDestroyView()
         _fragBinding = null
     }
 
+    //retrieving the
     override fun onResume() {
         super.onResume()
         loggedInViewModel.liveFirebaseUser.observe(viewLifecycleOwner, Observer { firebaseUser ->
@@ -173,16 +180,20 @@ class ArcadeListFragment : Fragment(), ArcadeListener {
         })
     }
 
+    //navigate to the arcade details fragment if an arcade is clicked
     override fun onArcadeClick(arcade: ArcadeModel) {
-        val action = ArcadeListFragmentDirections.actionArcadeListFragmentToArcadeDetailsFragment(arcade.uid)
-        if(!arcadeListViewModel.readOnly.value!!)
+        val action =
+            ArcadeListFragmentDirections.actionArcadeListFragmentToArcadeDetailsFragment(arcade.uid)
+        if (!arcadeListViewModel.readOnly.value!!)
             findNavController().navigate(action)
     }
 
+    //filtering the list of arcades. If the list is empty a snackbar will display, if there are
+    //arcades in the list then they will be the only ones shown when searcxhing
     private fun filterList(query: String?) {
         query?.let {
             val filteredList = arcades.filter { arcade ->
-                arcade.title.toLowerCase(Locale.ROOT).contains(it.toLowerCase(Locale.ROOT))
+                arcade.title.lowercase(Locale.ROOT).contains(it.lowercase(Locale.ROOT))
             }
 
             if (filteredList.isEmpty()) {

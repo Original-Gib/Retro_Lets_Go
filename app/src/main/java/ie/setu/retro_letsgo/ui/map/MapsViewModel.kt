@@ -6,7 +6,6 @@ import android.location.Location
 import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -32,17 +31,20 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    lateinit var map : GoogleMap
+    lateinit var map: GoogleMap
     var currentLocation = MutableLiveData<Location>()
-    var locationClient : FusedLocationProviderClient
+    var locationClient: FusedLocationProviderClient
 
     init {
         locationClient = LocationServices.getFusedLocationProviderClient(application)
-        locationClient.requestLocationUpdates(locationRequest, locationCallback,
-            Looper.getMainLooper())
+        locationClient.requestLocationUpdates(
+            locationRequest, locationCallback,
+            Looper.getMainLooper()
+        )
     }
+
     fun updateCurrentLocation() {
-        if(locationClient.lastLocation.isSuccessful)
+        if (locationClient.lastLocation.isSuccessful)
             locationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     currentLocation.value = location!!

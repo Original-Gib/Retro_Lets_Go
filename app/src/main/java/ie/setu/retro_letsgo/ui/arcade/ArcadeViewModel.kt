@@ -5,8 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseUser
 import ie.setu.retro_letsgo.firebase.FirebaseDBManager
-import ie.setu.retro_letsgo.firebase.FirebaseImageManager
-import ie.setu.retro_letsgo.models.ArcadeManager
 import ie.setu.retro_letsgo.models.ArcadeModel
 
 class ArcadeViewModel : ViewModel() {
@@ -16,10 +14,11 @@ class ArcadeViewModel : ViewModel() {
     val observableStatus: LiveData<Boolean>
         get() = status
 
+    //function to add a new arcade using the FirebaseDBmanager
     fun addArcade(firebaseUser: MutableLiveData<FirebaseUser>, arcade: ArcadeModel) {
         status.value = try {
 //            ArcadeManager.create(arcade)
-            FirebaseDBManager.create(firebaseUser,arcade)
+            FirebaseDBManager.create(firebaseUser, arcade)
             true
         } catch (e: IllegalArgumentException) {
             false
